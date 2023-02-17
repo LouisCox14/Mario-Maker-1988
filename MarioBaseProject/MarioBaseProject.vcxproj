@@ -88,17 +88,18 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PROJECTDIR)\SDL2\SDL\mixer_include;$(PROJECTDIR)\SDL2\SDL\image_include;$(PROJECTDIR)\SDL2\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PROJECTDIR)\SDL2\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)\SDL2\Debug\*.*" "$(SolutionDir)$(Configuration)" /Y</Command>
+      <Command>xcopy "$(ProjectDir)\SDL2\Debug\*.*" "$(SolutionDir)$(Configuration)" /Y
+xcopy "$(ProjectDir)SDL2\DLL\*.*" "$(OutDir)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -129,16 +130,17 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PROJECTDIR)\SDL\mixer_include;$(PROJECTDIR)\SDL\image_include;$(PROJECTDIR)\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PROJECTDIR)SDL2\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)\SDL2\Debug\*.*" "$(SolutionDir)$(Configuration)" /Y</Command>
+      <Command>xcopy "$(ProjectDir)\SDL2\Debug\*.*" "$(SolutionDir)$(Configuration)" /Y
+xcopy "$(ProjectDir)SDL2\DLL\*.*" "$(OutDir)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,6 +167,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\Downloads\BaseMarioProject-main\BaseMarioProject-main\MarioBaseProject\SDL2\SDL\SDL2.lib" />
+    <Library Include="..\..\..\..\Downloads\BaseMarioProject-main\BaseMarioProject-main\MarioBaseProject\SDL2\SDL\SDL2main.lib" />
+    <Library Include="..\..\..\..\Downloads\BaseMarioProject-main\BaseMarioProject-main\MarioBaseProject\SDL2\SDL\SDL2test.lib" />
+    <Library Include="..\..\..\..\Downloads\BaseMarioProject-main\BaseMarioProject-main\MarioBaseProject\SDL2\SDL\SDL2_image.lib" />
+    <Library Include="..\..\..\..\Downloads\BaseMarioProject-main\BaseMarioProject-main\MarioBaseProject\SDL2\SDL\SDL2_mixer.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="constants.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
