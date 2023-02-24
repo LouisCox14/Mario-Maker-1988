@@ -20,15 +20,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\..\..\Downloads\BaseMarioProject-main\BaseMarioProject-main\MarioBaseProject\SDL2\SDL\SDL2.lib" />
-    <Library Include="..\..\..\..\Downloads\BaseMarioProject-main\BaseMarioProject-main\MarioBaseProject\SDL2\SDL\SDL2_image.lib" />
-    <Library Include="..\..\..\..\Downloads\BaseMarioProject-main\BaseMarioProject-main\MarioBaseProject\SDL2\SDL\SDL2_mixer.lib" />
-    <Library Include="..\..\..\..\Downloads\BaseMarioProject-main\BaseMarioProject-main\MarioBaseProject\SDL2\SDL\SDL2main.lib" />
-    <Library Include="..\..\..\..\Downloads\BaseMarioProject-main\BaseMarioProject-main\MarioBaseProject\SDL2\SDL\SDL2test.lib" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="SDL2\SDL\SDL2.lib" />
+    <Library Include="SDL2\SDL\SDL2_image.lib" />
+    <Library Include="SDL2\SDL\SDL2_mixer.lib" />
+    <Library Include="SDL2\SDL\SDL2main.lib" />
   </ItemGroup>
 </Project>
