@@ -12,7 +12,7 @@ class Texture2D
 		Texture2D(SDL_Renderer* renderer);
 		~Texture2D();
 
-		bool LoadFromFile(std::string path);
+		bool LoadFromFile(std::string path, float scale = 1.0f);
 		void Free();
 		void Render(Vector2D new_position, SDL_RendererFlip flip, double angle = 0.0f);
 

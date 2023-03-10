@@ -10,7 +10,7 @@ class PhysicsObject;
 class Character
 {
 	public:
-		Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition);
+		Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale);
 		~Character();
 
 		virtual void Render();
@@ -24,11 +24,14 @@ class Character
 
 		int xInput;
 		float moveSpeed;
+		float airMoveSpeed;
 
 		bool jumpInput;
 		float jumpForce;
-		float currentJumpForce;
-		float jumpDrag;
+
+		Vector2D groundedDrag;
+		Vector2D fallingDrag;
+		Vector2D jumpingDrag;
 
 		void Move(float deltaTime);
 		void Jump(float deltaTime);

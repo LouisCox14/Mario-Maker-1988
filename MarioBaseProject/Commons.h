@@ -109,19 +109,17 @@ struct BoxCollider
 		size = _size;
 	}
 
-	COLLISION_SIDES* GetCollisionSides(BoxCollider other)
+	COLLISION_SIDES GetCollisionSide(BoxCollider other)
 	{
-		std::vector<COLLISION_SIDES> collSides;
-
 		if (abs(position.x - other.position.x) < size.x / 2 + other.size.x / 2)
 		{
 			if (position.x > other.position.x)
 			{
-				collSides.push_back(LEFT);
+				return LEFT;
 			}
 			else
 			{
-				collSides.push_back(RIGHT);
+				return RIGHT;
 			}
 		}
 
@@ -129,15 +127,13 @@ struct BoxCollider
 		{
 			if (position.y > other.position.y)
 			{
-				collSides.push_back(TOP);
+				return TOP;
 			}
 			else
 			{
-				collSides.push_back(BOTTOM);
+				return BOTTOM;
 			}
 		}
-
-		return collSides.data();
 	}
 
 	bool OverlapCheck(BoxCollider other)

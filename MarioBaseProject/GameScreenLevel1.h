@@ -19,6 +19,6 @@ class GameScreenLevel1 : GameScreen
 		Texture2D* m_background_texture;
 		Character* my_character;
 
-		bool SetUpLevel();
+		bool SetUpLevel(float levelScale);
 };
 

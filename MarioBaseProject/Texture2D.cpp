@@ -15,7 +15,7 @@ Texture2D::~Texture2D()
 	m_renderer = nullptr;
 }
 
-bool Texture2D::LoadFromFile(std::string path)
+bool Texture2D::LoadFromFile(std::string path, float scale)
 {
 	// Remove memory used for a previous texture
 	Free();
@@ -37,8 +37,8 @@ bool Texture2D::LoadFromFile(std::string path)
 		}
 		else
 		{
-			m_width = p_surface->w;
-			m_height = p_surface->h;
+			m_width = p_surface->w * scale;
+			m_height = p_surface->h * scale;
 		}
 
 		// Remove the loaded surface now that we have a texture

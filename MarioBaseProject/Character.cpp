@@ -3,7 +3,7 @@
 #include "Texture2D.h"
 #include "PhysicsObject.h"
 
-Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition)
+Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale)
 {
 	m_renderer = renderer;
 	m_position = startPosition;
@@ -13,20 +13,24 @@ Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D sta
 
 	xInput = 0;
 	moveSpeed = 750;
+	airMoveSpeed = 550;
 
 	jumpInput = false;
-	jumpForce = 300;
-	jumpDrag = 300;
+	jumpForce = 350;
+
+	groundedDrag = Vector2D(5, 0);
+	fallingDrag = Vector2D(2, 0.15);
+	jumpingDrag = Vector2D(2, 1);
 
 	// Load texture
 	m_texture = new Texture2D(m_renderer);
 
-	if (!m_texture->LoadFromFile(imagePath))
+	if (!m_texture->LoadFromFile(imagePath, scale))
 	{
 		std::cout << "Failed to load character texture! " << imagePath << " not found." << std::endl;
 	}
 
-	m_physics = PhysicsObject(m_position, Vector2D(m_texture->GetWidth(), m_texture->GetHeight()), Vector2D(5, 0.5), 1);
+	m_physics = PhysicsObject(m_position, Vector2D((float)m_texture->GetWidth(), (float)m_texture->GetHeight()), groundedDrag, 1);
 }
 
 Character::~Character()
