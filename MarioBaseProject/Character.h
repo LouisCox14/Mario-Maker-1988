@@ -1,9 +1,11 @@
 #pragma once
 #include "Commons.h"
+#include "PhysicsObject.h"
 #include <iostream>
 #include <SDL.h>
 
 class Texture2D;
+class PhysicsObject;
 
 class Character
 {
@@ -16,8 +18,6 @@ class Character
 		void SetPosition(Vector2D new_position);
 		Vector2D GetPosition();
 
-		virtual void AddGravity(float deltaTime);
-
 	private:
 		FACING m_facing_direction;
 		bool grounded;
@@ -26,6 +26,9 @@ class Character
 		float moveSpeed;
 
 		bool jumpInput;
+		float jumpForce;
+		float currentJumpForce;
+		float jumpDrag;
 
 		void Move(float deltaTime);
 		void Jump(float deltaTime);
@@ -34,5 +37,6 @@ class Character
 		SDL_Renderer* m_renderer;
 		Vector2D m_position;
 		Texture2D* m_texture;
+		PhysicsObject m_physics;
 };
 

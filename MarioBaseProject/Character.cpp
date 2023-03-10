@@ -1,6 +1,7 @@
 #include "Character.h"
 #include "Constants.h"
 #include "Texture2D.h"
+#include "PhysicsObject.h"
 
 Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition)
 {
@@ -11,9 +12,11 @@ Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D sta
 	grounded = false;
 
 	xInput = 0;
-	moveSpeed = 80;
+	moveSpeed = 750;
 
 	jumpInput = false;
+	jumpForce = 300;
+	jumpDrag = 300;
 
 	// Load texture
 	m_texture = new Texture2D(m_renderer);
@@ -22,6 +25,8 @@ Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D sta
 	{
 		std::cout << "Failed to load character texture! " << imagePath << " not found." << std::endl;
 	}
+
+	m_physics = PhysicsObject(m_position, Vector2D(m_texture->GetWidth(), m_texture->GetHeight()), Vector2D(5, 0.5), 1);
 }
 
 Character::~Character()
@@ -52,13 +57,12 @@ void Character::Update(float deltaTime, SDL_Event e)
 				{
 					case SDLK_a:
 						xInput -= 1;
-						m_facing_direction = FACING_LEFT;
 						break;
 					case SDLK_d:
 						xInput += 1;
-						m_facing_direction = FACING_RIGHT;
 						break;
 					case SDLK_SPACE:
+						m_physics.velocity.y -= jumpForce;
 						jumpInput = true;
 						break;
 				}
@@ -80,9 +84,18 @@ void Character::Update(float deltaTime, SDL_Event e)
 		}
 	}
 
-	Jump(deltaTime);
+	if (xInput > 0)
+	{
+		m_facing_direction = FACING_RIGHT;
+	}
+	else if (xInput < 0)
+	{
+		m_facing_direction = FACING_LEFT;
+	}
+
 	Move(deltaTime);
-	AddGravity(deltaTime);
+	m_physics.UpdatePhysics(deltaTime);
+	SetPosition(m_physics.position);
 }
 
 void Character::SetPosition(Vector2D new_position)
@@ -95,23 +108,15 @@ Vector2D Character::GetPosition()
 	return Vector2D(m_position);
 }
 
-void Character::AddGravity(float deltaTime)
-{
-	if (m_position.y + m_texture->GetHeight() <= SCREEN_HEIGHT)
-	{
-		m_position.y += deltaTime * GRAVITY;
-	}
-}
-
 void Character::Move(float deltaTime)
 {
-	m_position.x += xInput * deltaTime * moveSpeed;
+	m_physics.velocity.x += xInput * deltaTime * moveSpeed;
 }
 
 void Character::Jump(float deltaTime)
 {
 	if (jumpInput && grounded)
 	{
-
+		// Jump
 	}
 }
