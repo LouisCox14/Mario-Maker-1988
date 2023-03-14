@@ -1,5 +1,6 @@
 #include "Tile.h"
 #include "Texture2D.h"
+#include "GameScreen.h"
 #include <iostream>
 
 Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, std::string imagePath, float scale)
@@ -9,7 +10,8 @@ Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, std::string imagePath
 
 	SetUpTile(imagePath, scale);
 
-	coll = BoxCollider(position, Vector2D(m_tileTexture->GetHeight(), m_tileTexture->GetWidth()));
+	Vector2D textureDimensions = Vector2D(m_tileTexture->GetHeight(), m_tileTexture->GetWidth());
+	coll = BoxCollider(position + (textureDimensions / 2), textureDimensions);
 }
 
 Tile::~Tile()
@@ -22,9 +24,9 @@ Tile::~Tile()
 	coll = BoxCollider(Vector2D(0, 0), Vector2D(0, 0));
 }
 
-void Tile::Render()
+void Tile::Render(Vector2D cameraPosition)
 {
-	m_tileTexture->Render(position, SDL_FLIP_NONE);
+	m_tileTexture->Render(position - cameraPosition, SDL_FLIP_NONE);
 }
 
 bool Tile::SetUpTile(std::string imagePath, float scale)

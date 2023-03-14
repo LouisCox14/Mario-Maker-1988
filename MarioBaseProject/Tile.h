@@ -12,7 +12,7 @@ class Tile
 		~Tile();
 
 		bool SetUpTile(std::string imagePath, float scale);
-		void Render();
+		void Render(Vector2D cameraPosition);
 
 		BoxCollider coll;
 		Vector2D position;

@@ -185,6 +185,7 @@ xcopy "$(ProjectDir)SDL2\DLL\*.*" "$(OutDir)" /Y</Command>
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="TileData.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL2\SDL\SDL2.lib" />

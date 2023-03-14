@@ -16,7 +16,6 @@ class GameScreenLevel1 : GameScreen
 		void Update(float deltaTime, SDL_Event e) override;
 
 	private:
-		Texture2D* m_background_texture;
 		Character* my_character;
 
 		bool SetUpLevel(float levelScale);

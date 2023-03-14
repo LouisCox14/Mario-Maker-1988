@@ -3,6 +3,7 @@
 #include "PhysicsObject.h"
 #include <iostream>
 #include <SDL.h>
+#include <vector>
 
 class Texture2D;
 class PhysicsObject;
@@ -13,8 +14,8 @@ class Character
 		Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale);
 		~Character();
 
-		virtual void Render();
-		virtual void Update(float deltaTime, SDL_Event e);
+		virtual void Render(Vector2D cameraPosition);
+		virtual void Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& tileMap);
 		void SetPosition(Vector2D new_position);
 		Vector2D GetPosition();
 
@@ -25,16 +26,21 @@ class Character
 		int xInput;
 		float moveSpeed;
 		float airMoveSpeed;
+		float groundMoveSpeed;
 
-		bool jumpInput;
 		float jumpForce;
+		float jumpCounterFactor;
 
-		Vector2D groundedDrag;
+		Vector2D movingDrag;
+		Vector2D staticDrag;
 		Vector2D fallingDrag;
 		Vector2D jumpingDrag;
+		Vector2D currentDrag;
 
+		void SetMovementValues();
 		void Move(float deltaTime);
-		void Jump(float deltaTime);
+		void StartJump();
+		void EndJump();
 
 	protected:
 		SDL_Renderer* m_renderer;

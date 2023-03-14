@@ -1,6 +1,7 @@
 #pragma once
 #include <cmath>
 #include <vector>
+#include <iostream>
 
 enum SCREENS
 {
@@ -23,7 +24,8 @@ enum COLLISION_SIDES
 	TOP,
 	RIGHT,
 	BOTTOM,
-	LEFT
+	LEFT,
+	NONE
 };
 
 struct Vector2D
@@ -75,7 +77,7 @@ struct Vector2D
 
 	Vector2D operator/(const float& a) const
 	{
-		return Vector2D(a / x, a / y);
+		return Vector2D(x / a, y / a);
 	}
 
 	Vector2D& operator/=(const float& a)
@@ -87,7 +89,7 @@ struct Vector2D
 
 	Vector2D operator-(const Vector2D& a) const
 	{
-		return Vector2D(a.x - x, a.y - y);
+		return Vector2D(x - a.x, y - a.y);
 	}
 
 	Vector2D& operator-=(const Vector2D& a)
@@ -111,7 +113,19 @@ struct BoxCollider
 
 	COLLISION_SIDES GetCollisionSide(BoxCollider other)
 	{
-		if (abs(position.x - other.position.x) < size.x / 2 + other.size.x / 2)
+		if (abs(position.y - other.position.y) < size.y / 2 + other.size.y / 2 && abs(position.x - other.position.x) < size.x / 2 + other.size.x / 2 - 0.5f)
+		{
+			if (position.y > other.position.y)
+			{
+				return TOP;
+			}
+			else
+			{
+				return BOTTOM;
+			}
+		}
+
+		if (abs(position.x - other.position.x) < size.x / 2 + other.size.x / 2 && abs(position.y - other.position.y) < size.y / 2 + other.size.y / 2 - 0.5f)
 		{
 			if (position.x > other.position.x)
 			{
@@ -123,17 +137,7 @@ struct BoxCollider
 			}
 		}
 
-		if (abs(position.y - other.position.y) < size.y / 2 + other.size.y / 2)
-		{
-			if (position.y > other.position.y)
-			{
-				return TOP;
-			}
-			else
-			{
-				return BOTTOM;
-			}
-		}
+		return NONE;
 	}
 
 	bool OverlapCheck(BoxCollider other)
