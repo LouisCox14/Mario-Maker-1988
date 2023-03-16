@@ -2,12 +2,12 @@
 
 
         bbbb
-       bbbbb
-       bbbbb
-       bbbb
+       bbbbb                      bbbb  
+       bbbbb                      bbbb
+       bbbb 
 
-
-
-            gggg
-        gggggggg
-gggggggggggggggg
+                       bbb
+                       bbb
+            ggggggggggggggggg             bb
+        ggggggggggggggggggggggggggggg     bb
+gggggggggggggggggggggggggggggggggggggggggggg

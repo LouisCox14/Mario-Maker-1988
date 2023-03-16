@@ -113,7 +113,7 @@ struct BoxCollider
 
 	COLLISION_SIDES GetCollisionSide(BoxCollider other)
 	{
-		if (abs(position.y - other.position.y) < size.y / 2 + other.size.y / 2 && abs(position.x - other.position.x) < size.x / 2 + other.size.x / 2 - 0.5f)
+		if (abs(position.y - other.position.y) < size.y / 2 + other.size.y / 2 && abs(position.x - other.position.x) < size.x / 2 + other.size.x / 2 - 1)
 		{
 			if (position.y > other.position.y)
 			{
@@ -125,7 +125,7 @@ struct BoxCollider
 			}
 		}
 
-		if (abs(position.x - other.position.x) < size.x / 2 + other.size.x / 2 && abs(position.y - other.position.y) < size.y / 2 + other.size.y / 2 - 0.5f)
+		if (abs(position.x - other.position.x) < size.x / 2 + other.size.x / 2 && abs(position.y - other.position.y) < size.y / 2 + other.size.y / 2 - 1)
 		{
 			if (position.x > other.position.x)
 			{

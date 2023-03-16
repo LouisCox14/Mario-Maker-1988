@@ -32,10 +32,10 @@ void Tile::Render(Vector2D cameraPosition)
 bool Tile::SetUpTile(std::string imagePath, float scale)
 {
 	// Load texture
-	m_tileTexture = new Texture2D(m_renderer);
+	m_tileTexture = new Texture2D(m_renderer, scale);
 
 
-	if (!m_tileTexture->LoadFromFile(imagePath, scale))
+	if (!m_tileTexture->LoadFromFile(imagePath))
 	{
 		std::cout << "Failed to load tile texture! " << imagePath << " not found." << std::endl;
 		return false;

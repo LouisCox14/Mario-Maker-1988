@@ -2,9 +2,10 @@
 #include <SDL_image.h>
 #include <iostream>
 
-Texture2D::Texture2D(SDL_Renderer* renderer)
+Texture2D::Texture2D(SDL_Renderer* renderer, float _scale)
 {
 	m_renderer = renderer;
+	scale = _scale;
 }
 
 Texture2D::~Texture2D()
@@ -15,7 +16,7 @@ Texture2D::~Texture2D()
 	m_renderer = nullptr;
 }
 
-bool Texture2D::LoadFromFile(std::string path, float scale)
+bool Texture2D::LoadFromFile(std::string path)
 {
 	// Remove memory used for a previous texture
 	Free();

@@ -1,6 +1,7 @@
 #pragma once
 #include "Commons.h"
 #include "PhysicsObject.h"
+#include "Animator.h"
 #include <iostream>
 #include <SDL.h>
 #include <vector>
@@ -28,8 +29,14 @@ class Character
 		float airMoveSpeed;
 		float groundMoveSpeed;
 
+		bool jumpKeyDown;
 		float jumpForce;
 		float jumpCounterFactor;
+		float jumpInputFudge;
+		float timeSinceJumpInput = jumpInputFudge + 1;
+		float coyoteTime;
+		float timeSinceGrounded = coyoteTime + 1;
+		bool isJumping;
 
 		Vector2D movingDrag;
 		Vector2D staticDrag;
@@ -39,7 +46,7 @@ class Character
 
 		void SetMovementValues();
 		void Move(float deltaTime);
-		void StartJump();
+		void Jump(float deltaTime);
 		void EndJump();
 
 	protected:
@@ -47,5 +54,6 @@ class Character
 		Vector2D m_position;
 		Texture2D* m_texture;
 		PhysicsObject m_physics;
+		Animator* animator;
 };
 

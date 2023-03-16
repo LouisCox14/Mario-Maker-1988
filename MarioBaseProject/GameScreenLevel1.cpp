@@ -39,7 +39,7 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 bool GameScreenLevel1::SetUpLevel(float levelScale)
 {
 	// Set up player character
-	my_character = new Character(m_renderer, "Images/Small Mario.png", Vector2D(64, 64), levelScale);
+	my_character = new Character(m_renderer, "Sprites/Small Mario/Idle.png", Vector2D(64, 64), levelScale);
 
 	return true;
 }
