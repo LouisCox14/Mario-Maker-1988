@@ -1,9 +1,11 @@
 #include "Tile.h"
 #include "Texture2D.h"
 #include "GameScreen.h"
+#include "Commons.h"
 #include <iostream>
+#include <array>
 
-Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, std::string imagePath, float scale)
+Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, std::string imagePath, tileData tileInfo, float scale)
 {
 	m_renderer = renderer;
 	position = startPosition;
@@ -11,7 +13,43 @@ Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, std::string imagePath
 	SetUpTile(imagePath, scale);
 
 	Vector2D textureDimensions = Vector2D(m_tileTexture->GetHeight(), m_tileTexture->GetWidth());
-	coll = BoxCollider(position + (textureDimensions / 2), textureDimensions);
+
+	if (tileInfo.colliderType == COMPOSITE)
+	{
+		std::array<COLLISION_SIDES, 4> compositeColliderSides = { NONE, NONE, NONE, NONE };
+
+		if (imagePath.find(" Top") != -1 && tileInfo.collisionSides[(int)TOP] == TOP)
+		{
+			compositeColliderSides[(int)TOP] = TOP;
+		}
+		if (imagePath.find(" Right") != -1 && tileInfo.collisionSides[(int)RIGHT] == RIGHT)
+		{
+			compositeColliderSides[(int)RIGHT] = RIGHT;
+		}
+		if (imagePath.find(" Bottom") != -1 && tileInfo.collisionSides[(int)BOTTOM] == BOTTOM)
+		{
+			compositeColliderSides[(int)BOTTOM] = BOTTOM;
+		}
+		if (imagePath.find(" Left") != -1 && tileInfo.collisionSides[(int)LEFT] == LEFT)
+		{
+			compositeColliderSides[(int)LEFT] = LEFT;
+		}
+
+		coll = BoxCollider(position + (textureDimensions / 2), textureDimensions, compositeColliderSides);
+	}
+	else
+	{
+		coll = BoxCollider(position + (textureDimensions / 2), textureDimensions, tileInfo.collisionSides);
+	}
+
+	if (coll.collisionSides == std::array<COLLISION_SIDES, 4>{NONE, NONE, NONE, NONE})
+	{
+		hasCollider = false;
+	}
+	else
+	{
+		hasCollider = true;
+	}
 }
 
 Tile::~Tile()

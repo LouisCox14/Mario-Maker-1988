@@ -1,4 +1,5 @@
 #include "SmallLuigi.h"
+#include "Commons.h"
 
 SmallLuigi::SmallLuigi(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition) : Character(renderer, imagePath, startPosition, scale, _cameraPosition)
 {
@@ -28,4 +29,30 @@ SmallLuigi::SmallLuigi(SDL_Renderer* renderer, std::string imagePath, Vector2D s
 		{ "Turn", Animation(std::vector<std::string>{"Turn.png"}, 0.25f, true) },
 		{ "Jump", Animation(std::vector<std::string>{"Jump.png"}, 0.25f, true) }
 	}, std::string("Running"), std::string("Sprites/Small Luigi/"));
+}
+
+void SmallLuigi::Animate()
+{
+	if (m_physics.sidesColliding[(int)BOTTOM] == BOTTOM)
+	{
+		if (xInput != 0 && m_physics.velocity.x != 0)
+		{
+			if ((xInput == 1 && m_physics.velocity.x > 0) || (xInput == -1 && m_physics.velocity.x < 0))
+			{
+				animator->SetAnimation("Run");
+			}
+			else
+			{
+				animator->SetAnimation("Turn");
+			}
+		}
+		else
+		{
+			animator->SetAnimation("Idle");
+		}
+	}
+	else
+	{
+		animator->SetAnimation("Jump");
+	}
 }

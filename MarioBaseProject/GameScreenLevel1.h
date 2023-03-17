@@ -21,4 +21,3 @@ class GameScreenLevel1 : GameScreen
 
 		bool SetUpLevel(float levelScale);
 };
-

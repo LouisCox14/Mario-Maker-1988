@@ -35,10 +35,12 @@ void PhysicsObject::ResolveCollisions(const std::vector<Tile*>& tileMap)
 
 	for (Tile* tile : tileMap)
 	{
-		if (coll.OverlapCheck(tile->coll))
+		if (tile->hasCollider)
 		{
-			switch(coll.GetCollisionSide(tile->coll))
+			if (coll.OverlapCheck(tile->coll))
 			{
+				switch (coll.GetCollisionSide(tile->coll))
+				{
 				case TOP:
 					velocity.y = std::max(velocity.y, 0.0f);
 					sidesColliding[(int)TOP] = TOP;
@@ -55,6 +57,7 @@ void PhysicsObject::ResolveCollisions(const std::vector<Tile*>& tileMap)
 					velocity.x = std::max(velocity.x, 0.0f);
 					sidesColliding[(int)LEFT] = LEFT;
 					break;
+				}
 			}
 		}
 	}

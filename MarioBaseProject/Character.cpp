@@ -39,6 +39,8 @@ void Character::Render(Vector2D cameraPosition)
 	}
 }
 
+void Character::Animate() {}
+
 void Character::Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& tileMap)
 {
 	if (e.key.repeat == 0)
@@ -79,32 +81,13 @@ void Character::Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& t
 		}
 	}
 
-	if (xInput != 0)
+	if (xInput > 0)
 	{
-		animator->SetAnimation("Run");
-
-		if (xInput > 0)
-		{
-			m_facing_direction = FACING_RIGHT;
-
-			if (m_physics.velocity.x < 0)
-			{
-				animator->SetAnimation("Turn");
-			}
-		}
-		else if (xInput < 0)
-		{
-			m_facing_direction = FACING_LEFT;
-
-			if (m_physics.velocity.x > 0)
-			{
-				animator->SetAnimation("Turn");
-			}
-		}
+		m_facing_direction = FACING_RIGHT;
 	}
-	else
+	else if (xInput < 0)
 	{
-		animator->SetAnimation("Idle");
+		m_facing_direction = FACING_LEFT;
 	}
 
 	Move(deltaTime);
@@ -114,6 +97,7 @@ void Character::Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& t
 	m_physics.UpdatePhysics(deltaTime, tileMap);
 	SetPosition(m_physics.position);
 
+	Animate();
 	animator->Update(deltaTime);
 }
 
@@ -126,6 +110,11 @@ void Character::SetPosition(Vector2D new_position)
 Vector2D Character::GetPosition()
 {
 	return Vector2D(m_position);
+}
+
+Vector2D Character::GetSize()
+{
+	return Vector2D(m_texture->GetWidth(), m_texture->GetHeight());
 }
 
 void Character::LockToScreen()
@@ -157,8 +146,6 @@ void Character::SetMovementValues()
 	}
 	else
 	{
-		animator->SetAnimation("Jump");
-
 		moveSpeed = airMoveSpeed;
 		if (m_physics.velocity.y < 0.0f)
 		{

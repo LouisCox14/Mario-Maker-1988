@@ -86,7 +86,9 @@ float GameScreen::LoadFromTXT(std::string levelPath)
 			continue;
 		}
 
-		Tile* currentTile = new Tile(m_renderer, tilePos, GetFileName(i, levelString, rows, columns), tileScale);
+		tileData tileInfo = tileDict.at(levelString[i]);
+
+		Tile* currentTile = new Tile(m_renderer, tilePos, GetFileName(tileInfo, i, levelString, rows, columns), tileInfo, tileScale);
 		tileMap.push_back(currentTile);
 
 		tilePos.x += TILE_RESOLUTION * tileScale;
@@ -95,12 +97,11 @@ float GameScreen::LoadFromTXT(std::string levelPath)
 	return tileScale;
 }
 
-std::string GameScreen::GetFileName(int index, std::string levelString, int rows, int columns)
+std::string GameScreen::GetFileName(tileData tileInfo, int index, std::string levelString, int rows, int columns)
 {
-	tileData tileInfo = tileDict.at(levelString[index]);
 	std::string tileName = tileInfo.fileName;
 
-	if (tileInfo.autoTileTop)
+	if (tileInfo.autoTileSides[(int)TOP] == TOP)
 	{
 		if (index > columns)
 		{
@@ -110,7 +111,7 @@ std::string GameScreen::GetFileName(int index, std::string levelString, int rows
 			}
 		}
 	}
-	if (tileInfo.autoTileBottom)
+	if (tileInfo.autoTileSides[(int)BOTTOM] == BOTTOM)
 	{
 		if (index < (columns + 1) * (rows - 1))
 		{
@@ -120,7 +121,7 @@ std::string GameScreen::GetFileName(int index, std::string levelString, int rows
 			}
 		}
 	}
-	if (tileInfo.autoTileRight && index != 0)
+	if (tileInfo.autoTileSides[(int)RIGHT] == RIGHT && index != 0)
 	{
 		if ((index + 2) % (columns + 1) != 0)
 		{
@@ -130,7 +131,7 @@ std::string GameScreen::GetFileName(int index, std::string levelString, int rows
 			}
 		}
 	}
-	if (tileInfo.autoTileLeft && index != 0)
+	if (tileInfo.autoTileSides[(int)LEFT] == LEFT && index != 0)
 	{
 		if (index % (columns + 1) != 0)
 		{

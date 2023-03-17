@@ -17,9 +17,11 @@ class Character
 		~Character();
 
 		virtual void Render(Vector2D cameraPosition);
+		virtual void Animate();
 		virtual void Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& tileMap);
 		void SetPosition(Vector2D new_position);
 		Vector2D GetPosition();
+		Vector2D GetSize();
 		void LockToScreen();
 
 		Vector2D& cameraPosition;

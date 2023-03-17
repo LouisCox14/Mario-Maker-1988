@@ -1,5 +1,6 @@
 #pragma once
 #include "Tile.h"
+#include "TileData.h"
 #include <SDL.h>
 #include <string>
 #include <vector>
@@ -14,7 +15,7 @@ class GameScreen
 		virtual void Update(float deltaTime, SDL_Event e);
 
 		float LoadFromTXT(std::string levelPath);
-		std::string GetFileName(int index, std::string levelFile, int rows, int columns);
+		std::string GetFileName(tileData tileInfo, int index, std::string levelFile, int rows, int columns);
 		int LongestLine(std::string str);
 
 		std::vector<Tile*> tileMap;

@@ -2,6 +2,7 @@
 #include <cmath>
 #include <vector>
 #include <iostream>
+#include <array>
 
 enum SCREENS
 {
@@ -104,22 +105,24 @@ struct BoxCollider
 {
 	Vector2D position;
 	Vector2D size;
+	std::array<COLLISION_SIDES, 4> collisionSides;
 
-	BoxCollider(Vector2D _position = Vector2D(0, 0), Vector2D _size = Vector2D(0, 0))
+	BoxCollider(Vector2D _position = Vector2D(0, 0), Vector2D _size = Vector2D(0, 0), std::array<COLLISION_SIDES, 4> _collisionSides = { TOP, RIGHT, BOTTOM, LEFT })
 	{
 		position = _position;
 		size = _size;
+		collisionSides = _collisionSides;
 	}
 
 	COLLISION_SIDES GetCollisionSide(BoxCollider other)
 	{
 		if (abs(position.y - other.position.y) < size.y / 2 + other.size.y / 2 && abs(position.x - other.position.x) < size.x / 2 + other.size.x / 2 - 1)
 		{
-			if (position.y > other.position.y)
+			if (collisionSides[(int)TOP] == TOP && other.collisionSides[(int)BOTTOM] == BOTTOM && position.y - size.y / 2 > other.position.y + other.size.y / 2 - 2)
 			{
 				return TOP;
 			}
-			else
+			else if (collisionSides[(int)BOTTOM] == BOTTOM && other.collisionSides[(int)TOP] == TOP && position.y + size.y / 2 < other.position.y - other.size.y / 2 + 2)
 			{
 				return BOTTOM;
 			}
@@ -127,11 +130,11 @@ struct BoxCollider
 
 		if (abs(position.x - other.position.x) < size.x / 2 + other.size.x / 2 && abs(position.y - other.position.y) < size.y / 2 + other.size.y / 2 - 1)
 		{
-			if (position.x > other.position.x)
+			if (collisionSides[(int)LEFT] == LEFT && other.collisionSides[(int)RIGHT] == RIGHT && position.x - size.x / 2 > other.position.x + other.size.x / 2 - 2)
 			{
 				return LEFT;
 			}
-			else
+			else if (collisionSides[(int)RIGHT] == RIGHT && other.collisionSides[(int)LEFT] == LEFT && position.x + size.x / 2 < other.position.x - other.size.x / 2 + 2)
 			{
 				return RIGHT;
 			}
