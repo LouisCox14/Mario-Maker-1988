@@ -1,5 +1,6 @@
 #pragma once
 #include "Commons.h"
+#include "Controls.h"
 #include "PhysicsObject.h"
 #include "Animator.h"
 #include <iostream>
@@ -12,17 +13,21 @@ class PhysicsObject;
 class Character
 {
 	public:
-		Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale);
+		Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition);
 		~Character();
 
 		virtual void Render(Vector2D cameraPosition);
 		virtual void Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& tileMap);
 		void SetPosition(Vector2D new_position);
 		Vector2D GetPosition();
+		void LockToScreen();
 
-	private:
+		Vector2D& cameraPosition;
+
 		FACING m_facing_direction;
 		bool grounded;
+
+		CharacterControls controls;
 
 		int xInput;
 		float moveSpeed;
@@ -56,4 +61,3 @@ class Character
 		PhysicsObject m_physics;
 		Animator* animator;
 };
-

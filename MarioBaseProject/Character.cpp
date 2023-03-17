@@ -3,30 +3,15 @@
 #include "Texture2D.h"
 #include "PhysicsObject.h"
 #include "GameScreenManager.h"
+#include "GameScreen.h"
 #include <vector>
 
 
-Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale)
+Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition) : cameraPosition(_cameraPosition)
 {
 	m_renderer = renderer;
 	m_position = startPosition;
 	m_facing_direction = FACING_RIGHT;
-
-	grounded = false;
-
-	xInput = 0;
-	groundMoveSpeed = 550;
-	airMoveSpeed = 350;
-
-	jumpForce = 550;
-	jumpCounterFactor = 0.55f;
-	jumpInputFudge = 0.2f;
-	coyoteTime = 0.1f;
-
-	movingDrag = Vector2D(2, 0);
-	staticDrag = Vector2D(7, 0);
-	fallingDrag = Vector2D(2, 0.01);
-	jumpingDrag = Vector2D(1.5, 1);
 
 	// Load texture
 	m_texture = new Texture2D(m_renderer, scale);
@@ -35,15 +20,6 @@ Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D sta
 	{
 		std::cout << "Failed to load character texture! " << imagePath << " not found." << std::endl;
 	}
-
-	m_physics = PhysicsObject(m_position, Vector2D((float)m_texture->GetWidth(), (float)m_texture->GetHeight()), movingDrag, 1);
-
-	animator = new Animator(*m_texture, std::map<std::string, Animation>{
-		{"Idle", Animation(std::vector<std::string>{"Idle.png"}, 0.25f, true)},
-		{ "Run", Animation(std::vector<std::string>{"Idle.png", "Run.png"}, 0.1f, true)},
-		{ "Turn", Animation(std::vector<std::string>{"Turn.png"}, 0.25f, true)},
-		{ "Jump", Animation(std::vector<std::string>{"Jump.png"}, 0.25f, true)}
-	}, std::string("Running"), std::string("Sprites/Small Mario/"));
 }
 
 Character::~Character()
@@ -70,33 +46,34 @@ void Character::Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& t
 		switch (e.type)
 		{
 			case SDL_KEYDOWN:
-				switch (e.key.keysym.sym)
+
+				if (e.key.keysym.sym == controls.leftMove)
 				{
-					case SDLK_a:
-						xInput -= 1;
-						break;
-					case SDLK_d:
-						xInput += 1;
-						break;
-					case SDLK_SPACE:
-						jumpKeyDown = true;
-						timeSinceJumpInput = 0;
-						break;
+					xInput -= 1;
+				}
+				else if (e.key.keysym.sym == controls.rightMove)
+				{
+					xInput += 1;
+				}
+				else if (e.key.keysym.sym == controls.jump)
+				{
+					jumpKeyDown = true;
+					timeSinceJumpInput = 0;
 				}
 				break;
 			case SDL_KEYUP:
-				switch (e.key.keysym.sym)
+				if (e.key.keysym.sym == controls.leftMove)
 				{
-					case SDLK_a:
-						xInput += 1;
-						break;
-					case SDLK_d:
-						xInput -= 1;
-						break;
-					case SDLK_SPACE:
-						jumpKeyDown = false;
-						EndJump();
-						break;
+					xInput += 1;
+				}
+				else if (e.key.keysym.sym == controls.rightMove)
+				{
+					xInput -= 1;
+				}
+				else if (e.key.keysym.sym == controls.jump)
+				{
+					jumpKeyDown = false;
+					EndJump();
 				}
 				break;
 		}
@@ -133,6 +110,7 @@ void Character::Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& t
 	Move(deltaTime);
 	Jump(deltaTime);
 	SetMovementValues();
+	LockToScreen();
 	m_physics.UpdatePhysics(deltaTime, tileMap);
 	SetPosition(m_physics.position);
 
@@ -144,9 +122,22 @@ void Character::SetPosition(Vector2D new_position)
 	m_position = new_position;
 }
 
+
 Vector2D Character::GetPosition()
 {
 	return Vector2D(m_position);
+}
+
+void Character::LockToScreen()
+{
+	if (m_position.x + m_texture->GetWidth() > cameraPosition.x + SCREEN_WIDTH)
+	{
+		m_physics.velocity.x = std::min(m_physics.velocity.x, -100.0f);
+	}
+	else if (m_position.x < cameraPosition.x)
+	{
+		m_physics.velocity.x = std::max(m_physics.velocity.x, 100.0f);
+	}
 }
 
 void Character::SetMovementValues()

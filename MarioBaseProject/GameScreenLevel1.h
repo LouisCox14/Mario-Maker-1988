@@ -16,7 +16,8 @@ class GameScreenLevel1 : GameScreen
 		void Update(float deltaTime, SDL_Event e) override;
 
 	private:
-		Character* my_character;
+		Character* mario;
+		Character* luigi;
 
 		bool SetUpLevel(float levelScale);
 };

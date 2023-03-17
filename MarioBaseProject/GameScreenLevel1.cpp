@@ -1,5 +1,7 @@
 #include "GameScreenLevel1.h"
 #include "Texture2D.h"
+#include "SmallMario.h"
+#include "SmallLuigi.h"
 #include <iostream>
 
 GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : GameScreen(renderer)
@@ -9,8 +11,10 @@ GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : GameScreen(renderer
 
 GameScreenLevel1::~GameScreenLevel1()
 {
-	delete my_character;
-	my_character = nullptr;
+	delete mario;
+	mario = nullptr;
+	delete luigi;
+	luigi = nullptr;
 }
 
 void GameScreenLevel1::Render()
@@ -23,14 +27,16 @@ void GameScreenLevel1::Render()
 	}
 
 	//Draw the character
-	my_character->Render(GameScreen::cameraPosition);
+	mario->Render(GameScreen::cameraPosition);
+	luigi->Render(GameScreen::cameraPosition);
 }
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 {
-	my_character->Update(deltaTime, e, GetOnScreenTiles());
+	mario->Update(deltaTime, e, GetOnScreenTiles());
+	luigi->Update(deltaTime, e, GetOnScreenTiles());
 
-	float cameraX = my_character->GetPosition().x - SCREEN_WIDTH / 2;
+	float cameraX = (mario->GetPosition().x + luigi->GetPosition().x) / 2 - SCREEN_WIDTH / 2;
 	cameraX = std::max(cameraX, 0.0f);
 	cameraX = std::min(cameraX, (float)GameScreen::levelWidth - SCREEN_WIDTH);
 	GameScreen::cameraPosition.x = cameraX;
@@ -39,7 +45,11 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 bool GameScreenLevel1::SetUpLevel(float levelScale)
 {
 	// Set up player character
-	my_character = new Character(m_renderer, "Sprites/Small Mario/Idle.png", Vector2D(64, 64), levelScale);
+	SmallMario* tempMario = new SmallMario(m_renderer, "Sprites/Small Mario/Idle.png", Vector2D(64, 64), levelScale, cameraPosition);
+	mario = (Character*)tempMario;
+
+	SmallLuigi* tempLuigi = new SmallLuigi(m_renderer, "Sprites/Small Mario/Idle.png", Vector2D(64, 64), levelScale, cameraPosition);
+	luigi = (Character*)tempLuigi;
 
 	return true;
 }
