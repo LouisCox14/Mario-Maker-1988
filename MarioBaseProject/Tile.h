@@ -1,6 +1,7 @@
 #pragma once
 #include "Commons.h"
 #include "TileData.h"
+#include "Animator.h"
 #include <SDL.h>
 #include <string>
 
@@ -14,13 +15,16 @@ class Tile
 
 		bool SetUpTile(std::string imagePath, float scale);
 		void Render(Vector2D cameraPosition);
+		void Update(float deltaTime);
 
 		bool hasCollider;
+		bool isAnimated;
 		BoxCollider coll;
 		Vector2D position;
 
 	private:
 		SDL_Renderer* m_renderer;
 		Texture2D* m_tileTexture;
+		Animator* m_animator;
 };
 

@@ -7,10 +7,10 @@ SmallMario::SmallMario(SDL_Renderer* renderer, std::string imagePath, Vector2D s
 	controls = CharacterControls(SDLK_d, SDLK_a, SDLK_w);
 
 	xInput = 0;
-	groundMoveSpeed = 550;
-	airMoveSpeed = 350;
+	groundMoveSpeed = 275;
+	airMoveSpeed = 175;
 
-	jumpForce = 550;
+	jumpForce = 275;
 	jumpCounterFactor = 0.55f;
 	jumpInputFudge = 0.2f;
 	coyoteTime = 0.1f;
@@ -20,7 +20,7 @@ SmallMario::SmallMario(SDL_Renderer* renderer, std::string imagePath, Vector2D s
 	fallingDrag = Vector2D(2, 0.01);
 	jumpingDrag = Vector2D(1.5, 1);
 
-	m_physics = PhysicsObject(m_position, Vector2D((float)m_texture->GetWidth(), (float)m_texture->GetHeight()), movingDrag, 1);
+	m_physics = PhysicsObject(m_position, scale, Vector2D((float)m_texture->GetWidth(), (float)m_texture->GetHeight()), movingDrag, 1);
 
 	animator = new Animator(*m_texture, std::map<std::string, Animation>{
 		{"Idle", Animation(std::vector<std::string>{"Idle.png"}, 0.25f, true)},

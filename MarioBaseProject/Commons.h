@@ -11,7 +11,8 @@ enum SCREENS
 	SCREEN_LEVEL1,
 	SCREEN_LEVEL2,
 	SCREEN_GAMEOVER,
-	SCREEN_HIGHSCORES
+	SCREEN_HIGHSCORES,
+	SCREEN_LEVEL_CREATOR
 };
 
 enum FACING
@@ -85,6 +86,18 @@ struct Vector2D
 	{
 		x = x / a;
 		y = y / a;
+		return *this;
+	}
+
+	Vector2D operator%(const float& a) const
+	{
+		return Vector2D((int)x % (int)a, (int)y % (int)a);
+	}
+
+	Vector2D& operator%=(const float& a)
+	{
+		x = (int)x % (int)a;
+		y = (int)y % (int)a;
 		return *this;
 	}
 

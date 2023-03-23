@@ -10,6 +10,12 @@ Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, std::string imagePath
 	m_renderer = renderer;
 	position = startPosition;
 
+	if (tileInfo.isAnimated)
+	{
+		isAnimated = true;
+		imagePath = "Tiles/" + tileInfo.fileName + " " + "1.png";
+	}
+
 	SetUpTile(imagePath, scale);
 
 	Vector2D textureDimensions = Vector2D(m_tileTexture->GetHeight(), m_tileTexture->GetWidth());
@@ -50,6 +56,18 @@ Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, std::string imagePath
 	{
 		hasCollider = true;
 	}
+
+	if (tileInfo.isAnimated)
+	{
+		Animation tempAnim = Animation(std::vector<std::string>{}, tileInfo.animationDelay, true);
+
+		for (int i = 1; i < tileInfo.animationFrames + 1; i++)
+		{
+			tempAnim.framePaths.push_back(tileInfo.fileName + " " + std::to_string(i) + ".png");
+		}
+
+		m_animator = new Animator(*m_tileTexture, std::map<std::string, Animation>{{"Idle", tempAnim}}, std::string("Idle"), std::string("Tiles/"));
+	}
 }
 
 Tile::~Tile()
@@ -65,6 +83,14 @@ Tile::~Tile()
 void Tile::Render(Vector2D cameraPosition)
 {
 	m_tileTexture->Render(position - cameraPosition, SDL_FLIP_NONE);
+}
+
+void Tile::Update(float deltaTime)
+{
+	if (isAnimated)
+	{
+		m_animator->Update(deltaTime);
+	};
 }
 
 bool Tile::SetUpTile(std::string imagePath, float scale)

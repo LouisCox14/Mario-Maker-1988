@@ -121,11 +121,11 @@ void Character::LockToScreen()
 {
 	if (m_position.x + m_texture->GetWidth() > cameraPosition.x + SCREEN_WIDTH)
 	{
-		m_physics.velocity.x = std::min(m_physics.velocity.x, -100.0f);
+		m_physics.velocity.x = std::min(m_physics.velocity.x, -50.0f);
 	}
 	else if (m_position.x < cameraPosition.x)
 	{
-		m_physics.velocity.x = std::max(m_physics.velocity.x, 100.0f);
+		m_physics.velocity.x = std::max(m_physics.velocity.x, 50.0f);
 	}
 }
 

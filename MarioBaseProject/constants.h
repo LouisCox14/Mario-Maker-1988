@@ -4,4 +4,4 @@
 #define SCREEN_HEIGHT 416
 #define TILE_RESOLUTION 16
 
-#define GRAVITY 800
+#define GRAVITY 400

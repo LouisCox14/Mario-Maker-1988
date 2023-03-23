@@ -169,7 +169,8 @@ xcopy "$(ProjectDir)SDL2\DLL\*.*" "$(OutDir)" /Y</Command>
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="GameScreen.cpp" />
-    <ClCompile Include="GameScreenLevel1.cpp" />
+    <ClCompile Include="LevelCreator.cpp" />
+    <ClCompile Include="LevelScreen.cpp" />
     <ClCompile Include="GameScreenManager.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="SmallLuigi.cpp" />
@@ -185,7 +186,8 @@ xcopy "$(ProjectDir)SDL2\DLL\*.*" "$(OutDir)" /Y</Command>
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="GameScreen.h" />
-    <ClInclude Include="GameScreenLevel1.h" />
+    <ClInclude Include="LevelCreator.h" />
+    <ClInclude Include="LevelScreen.h" />
     <ClInclude Include="GameScreenManager.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="SmallLuigi.h" />

@@ -4,10 +4,10 @@
    bb          bbbb         bb
                      bbb
                      bbb
-
-
-
-                   gggggg      bbb
-                   gggggg      bbb
-    gggg           gggggg
+         sss
+         sss          pp
+  q                   pp
+                  wgggggg      bbb
+                 wwgggggg      bbb
+    gggg        wwwgggggg
 ggggggggggggggggggggggggggggggggggg

@@ -38,8 +38,8 @@ bool Texture2D::LoadFromFile(std::string path)
 		}
 		else
 		{
-			m_width = p_surface->w * scale;
-			m_height = p_surface->h * scale;
+			m_width = static_cast<int>((float)p_surface->w * scale + 0.5f);
+			m_height = static_cast<int>((float)p_surface->h * scale + 0.5f);
 		}
 
 		// Remove the loaded surface now that we have a texture
@@ -60,8 +60,8 @@ void Texture2D::Free()
 	if (m_texture != nullptr)
 	{
 		SDL_DestroyTexture(m_texture);
-		m_width = 0.0f;
-		m_height = 0.0f;
+		m_width = 0;
+		m_height = 0;
 		m_texture = nullptr;
 	}
 }
@@ -69,7 +69,7 @@ void Texture2D::Free()
 void Texture2D::Render(Vector2D new_position, SDL_RendererFlip flip, double angle)
 {
 	// Set where to render the texture
-	SDL_Rect renderLocation = { new_position.x, new_position.y, m_width, m_height };
+	SDL_Rect renderLocation = { static_cast<int>(new_position.x), static_cast<int>(new_position.y), m_width, m_height };
 
 	// Render to screen
 	SDL_RenderCopyEx(m_renderer, m_texture, NULL, &renderLocation, angle, NULL, flip);

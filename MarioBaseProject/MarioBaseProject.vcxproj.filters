@@ -24,7 +24,7 @@
     <ClCompile Include="GameScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameScreenLevel1.cpp">
+    <ClCompile Include="LevelScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameScreenManager.cpp">
@@ -48,6 +48,9 @@
     <ClCompile Include="SmallLuigi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LevelCreator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
@@ -62,7 +65,7 @@
     <ClInclude Include="GameScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameScreenLevel1.h">
+    <ClInclude Include="LevelScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameScreenManager.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SmallLuigi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

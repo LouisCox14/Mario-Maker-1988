@@ -5,11 +5,12 @@
 #include <vector>
 #include <iostream>
 
-PhysicsObject::PhysicsObject(Vector2D _startPosition, Vector2D _collSize, Vector2D _drag, float _gravityScale)
+PhysicsObject::PhysicsObject(Vector2D _startPosition, float _screenScale, Vector2D _collSize, Vector2D _drag, float _gravityScale)
 {
 	position = _startPosition;
 	drag = _drag;
 	gravityScale = _gravityScale;
+	screenScale = _screenScale;
 
 	velocity = Vector2D(0, 0);
 	coll = BoxCollider(_startPosition, _collSize);
@@ -69,5 +70,5 @@ void PhysicsObject::UpdatePhysics(float deltaTime, const std::vector<Tile*>& til
 	ResolveCollisions(tileMap);
 
 	velocity += (velocity * -1) * drag * deltaTime;
-	position += velocity * deltaTime;
+	position += velocity * deltaTime * screenScale;
 }
