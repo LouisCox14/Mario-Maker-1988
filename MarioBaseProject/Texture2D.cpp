@@ -32,11 +32,7 @@ bool Texture2D::LoadFromFile(std::string path)
 		// Create the texture from the pixels on the surface
 		m_texture = SDL_CreateTextureFromSurface(m_renderer, p_surface);
 
-		if (m_texture == nullptr)
-		{
-			std::cout << "Unable to create texture from surface. Error: " << SDL_GetError();
-		}
-		else
+		if (m_texture != nullptr)
 		{
 			imageRect = Vector2D((float)p_surface->w, (float)p_surface->h);
 			m_width = static_cast<int>(imageRect.x * scale + 0.5f);
@@ -45,10 +41,6 @@ bool Texture2D::LoadFromFile(std::string path)
 
 		// Remove the loaded surface now that we have a texture
 		SDL_FreeSurface(p_surface);
-	}
-	else
-	{
-		std::cout << "Unable to create texture from surface. Error: " << IMG_GetError();
 	}
 
 	// Return whether the process was successful

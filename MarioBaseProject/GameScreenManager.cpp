@@ -45,11 +45,11 @@ void GameScreenManager::ChangeScreen(SCREENS new_screen)
 			m_current_screen = tempScreen;
 			tempScreen = nullptr;
 			break;
-		case SCREEN_LEVEL1:
+		/*case SCREEN_LEVEL1:
 			tempScreen = (GameScreen*)new LevelScreen(m_renderer, "Levels/Test.txt", false);
 			m_current_screen = tempScreen;
 			tempScreen = nullptr;
-			break;
+			break;*/
 		default:	;
 	}
 }

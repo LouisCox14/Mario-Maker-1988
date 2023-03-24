@@ -1,11 +1,11 @@
 #pragma once
 #include <string>
-#include <map>
+#include <vector>
 #include <string>
 #include <array>
 #include "Commons.h"
 
-enum COLLIDER_TYPE
+enum TILE_TYPE
 {
 	COMPOSITE,
 	SINGLE
@@ -14,29 +14,46 @@ enum COLLIDER_TYPE
 struct tileData
 {
 	std::string fileName;
-	std::array<COLLISION_SIDES, 4> autoTileSides;
 
-	COLLIDER_TYPE colliderType;
+	TILE_TYPE spriteType;
+	std::array<COLLISION_SIDES, 4> autoTileSides;
+	std::string defaultSuffix;
+
+	TILE_TYPE colliderType;
 	std::array<COLLISION_SIDES, 4> collisionSides;
 
 	bool isAnimated;
 	int animationFrames;
 	float animationDelay;
 
-	tileData(std::string _fileName = "", std::array<COLLISION_SIDES, 4> _autoTileSides = { NONE, NONE, NONE, NONE })
+	tileData(std::string _fileName = "")
 	{
 		fileName = _fileName;
-		autoTileSides = _autoTileSides;
 
+		spriteType = SINGLE;
 		colliderType = SINGLE;
-		collisionSides = { TOP, RIGHT, BOTTOM, LEFT };
 
 		isAnimated = false;
 	}
 
-	tileData(std::string _fileName, std::array<COLLISION_SIDES, 4> _autoTileSides, COLLIDER_TYPE _colliderType, std::array<COLLISION_SIDES, 4> _collisionSides = { TOP, RIGHT, BOTTOM, LEFT })
+	tileData(std::string _fileName, TILE_TYPE _spriteType, std::array<COLLISION_SIDES, 4> _autoTileSides, std::string _defaultSuffix)
 	{
 		fileName = _fileName;
+		defaultSuffix = _defaultSuffix;
+
+		spriteType = _spriteType;
+		autoTileSides = _autoTileSides;
+
+		colliderType = SINGLE;
+		isAnimated = false;
+	}
+
+	tileData(std::string _fileName, TILE_TYPE _spriteType, TILE_TYPE _colliderType, std::array<COLLISION_SIDES, 4> _autoTileSides = {TOP, BOTTOM, RIGHT, LEFT}, std::array<COLLISION_SIDES, 4> _collisionSides = { TOP, BOTTOM, RIGHT, LEFT }, std::string _defaultSuffix = "")
+	{
+		fileName = _fileName;
+		defaultSuffix = _defaultSuffix;
+
+		spriteType = _spriteType;
 		autoTileSides = _autoTileSides;
 
 		colliderType = _colliderType;
@@ -48,10 +65,9 @@ struct tileData
 	tileData(std::string _fileName, int _animationFrames, float _animationDelay)
 	{
 		fileName = _fileName;
-		autoTileSides = { NONE, NONE, NONE, NONE };
 
+		spriteType = SINGLE;
 		colliderType = SINGLE;
-		collisionSides = { TOP, RIGHT, BOTTOM, LEFT };
 
 		isAnimated = true;
 		animationFrames = _animationFrames;
@@ -59,12 +75,17 @@ struct tileData
 	}
 };
 
-static std::map<char, tileData> tileDict = 
-{
-	{'g', tileData(std::string("Ground"), {TOP, RIGHT, NONE, LEFT}, COMPOSITE)},
-	{'b', tileData(std::string("Green Block"), {TOP, RIGHT, BOTTOM, LEFT}, COMPOSITE, {TOP, NONE, NONE, NONE})},
-	{'w', tileData(std::string("Wood Block"))},
-	{'p', tileData(std::string("Pipe"), {TOP, RIGHT, NONE, LEFT}, COMPOSITE)},
-	{'s', tileData(std::string("Shiny Block"), 4, 0.15f)},
-	{'q', tileData(std::string("Question Block"), 4, 0.15f)}
+const std::vector<tileData> terrainTiles = {
+	tileData("Ground", COMPOSITE, COMPOSITE, {TOP, NONE, RIGHT, LEFT}, {TOP, NONE, RIGHT, LEFT}, " Top"),
+	tileData("Green Block", COMPOSITE, COMPOSITE, {TOP, BOTTOM, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right")
+};
+
+const std::vector<tileData> specialTiles = {
+	tileData("Shiny Block", 4, 0.15f),
+	tileData("Question Block", 4, 0.15f),
+	tileData("Pipe", COMPOSITE, COMPOSITE, {TOP, NONE, RIGHT, LEFT}, {TOP, NONE, RIGHT, LEFT}, " Top Right")
+};
+
+const std::vector<tileData> decorationTiles = {
+	tileData("Shrubbery", COMPOSITE, SINGLE, {NONE, NONE, RIGHT, LEFT}, {NONE, NONE, NONE, NONE})
 };

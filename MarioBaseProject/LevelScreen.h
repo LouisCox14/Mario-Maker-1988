@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include "Commons.h"
 #include "GameScreen.h"
 #include "Character.h"
@@ -29,3 +29,4 @@ class LevelScreen : GameScreen
 
 		bool SetUpLevel(float levelScale, bool multiplayer);
 };
+*/

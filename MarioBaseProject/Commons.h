@@ -24,8 +24,8 @@ enum FACING
 enum COLLISION_SIDES
 {
 	TOP,
-	RIGHT,
 	BOTTOM,
+	RIGHT,
 	LEFT,
 	NONE
 };

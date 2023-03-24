@@ -3,6 +3,7 @@
 #include "Commons.h"
 #include "Tile.h"
 #include "TileData.h"
+#include "ButtonUI.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -21,3 +22,5 @@ GameScreen::~GameScreen()
 void GameScreen::Render() {}
 
 void GameScreen::Update(float deltaTime, SDL_Event e) {}
+
+void GameScreen::ButtonClicked(ButtonUI* button, bool leftClick) {}
