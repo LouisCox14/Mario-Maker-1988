@@ -28,4 +28,5 @@ class LevelCreator : GameScreen
 	private:
 		Vector2D PixelToGridPos(Vector2D pixelPosition);
 		void PlaceTile(Vector2D gridPosition, tileData tileInfo);
+		int GetTileIndexAtGridPos(Vector2D gridPosition);
 };

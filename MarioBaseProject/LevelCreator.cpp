@@ -3,7 +3,7 @@
 LevelCreator::LevelCreator(SDL_Renderer* renderer) : GameScreen(renderer) 
 {
 	camSpeed = 100.0f;
-	camScale = 1.0f;
+	camScale = 2.0f;
 	scaleSpeed = 0.15f;
 }
 
@@ -16,12 +16,12 @@ void LevelCreator::Render()
 	SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
 	Vector2D gridOffset = GameScreen::cameraPosition % (TILE_RESOLUTION * camScale);
 
-	for (int x = 0; x < SCREEN_WIDTH + TILE_RESOLUTION * camScale; x += TILE_RESOLUTION * camScale)
+	for (float x = 0; x < SCREEN_WIDTH + TILE_RESOLUTION * camScale; x += TILE_RESOLUTION * camScale)
 	{
 		SDL_RenderDrawLine(m_renderer, x - gridOffset.x, 0, x - gridOffset.x, SCREEN_HEIGHT);
 	}
 
-	for (int y = 0; y < SCREEN_HEIGHT + TILE_RESOLUTION * camScale; y += TILE_RESOLUTION * camScale)
+	for (float y = 0; y < SCREEN_HEIGHT + TILE_RESOLUTION * camScale; y += TILE_RESOLUTION * camScale)
 	{
 		SDL_RenderDrawLine(m_renderer, 0, y - gridOffset.y, SCREEN_WIDTH, y - gridOffset.y);
 	}
@@ -34,6 +34,9 @@ void LevelCreator::Render()
 
 void LevelCreator::Update(float deltaTime, SDL_Event e)
 {
+	SDL_GetMouseState(&mouseX, &mouseY);
+	Vector2D mouseGridPos = PixelToGridPos(Vector2D((float)mouseX, (float)mouseY));
+
 	if (e.key.repeat == 0)
 	{
 		switch (e.type)
@@ -74,17 +77,21 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 				}
 
 				break;
-			case SDL_MOUSEWHEEL:
-				if (camScale + e.wheel.y * scaleSpeed > 0.3f)
-				{
-					camScale += e.wheel.y * scaleSpeed;
-					GameScreen::cameraPosition += Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT) * e.wheel.y * scaleSpeed;
-				}
-				break;
 			case SDL_MOUSEBUTTONDOWN:
-				SDL_GetMouseState(&mouseX, &mouseY);
-				Vector2D mouseGridPos = PixelToGridPos(Vector2D((float)mouseX, (float)mouseY));
-				PlaceTile(mouseGridPos, tileDict.at('s'));
+				switch (e.button.button)
+				{
+					case SDL_BUTTON_LEFT:
+						PlaceTile(mouseGridPos, tileDict.at('s'));
+						break;
+					case SDL_BUTTON_RIGHT:
+						int targetTile = GetTileIndexAtGridPos(mouseGridPos);
+						if (targetTile != -1)
+						{
+							delete tileMap[targetTile];
+							tileMap.erase(tileMap.begin() + targetTile);
+						}
+						break;
+				}
 				break;
 		}
 	}
@@ -104,4 +111,19 @@ Vector2D LevelCreator::PixelToGridPos(Vector2D pixelPosition)
 void LevelCreator::PlaceTile(Vector2D gridPosition, tileData tileInfo)
 {
 	tileMap.push_back(new Tile(m_renderer, gridPosition * TILE_RESOLUTION * camScale, tileInfo.fileName, tileInfo, camScale));
+}
+
+int LevelCreator::GetTileIndexAtGridPos(Vector2D gridPosition)
+{
+	Vector2D pixelPosition = gridPosition * TILE_RESOLUTION * camScale;
+
+	for (int i = 0; i < tileMap.size(); i++)
+	{
+		if (tileMap[i]->position == pixelPosition)
+		{
+			return i;
+		}
+	}
+
+	return -1;
 }

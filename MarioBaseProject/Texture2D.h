@@ -27,6 +27,8 @@ class Texture2D
 
 		int m_width;
 		int m_height;
+
+		Vector2D imageRect;
 };
 
 #endif //_TEXTURE2D_H

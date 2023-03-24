@@ -112,6 +112,11 @@ struct Vector2D
 		y -= a.y;
 		return *this;
 	}
+
+	bool operator==(const Vector2D& a) const
+	{
+		return x == a.x && y == a.y;
+	}
 };
 
 struct BoxCollider

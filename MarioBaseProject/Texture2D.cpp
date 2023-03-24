@@ -38,8 +38,9 @@ bool Texture2D::LoadFromFile(std::string path)
 		}
 		else
 		{
-			m_width = static_cast<int>((float)p_surface->w * scale + 0.5f);
-			m_height = static_cast<int>((float)p_surface->h * scale + 0.5f);
+			imageRect = Vector2D((float)p_surface->w, (float)p_surface->h);
+			m_width = static_cast<int>(imageRect.x * scale + 0.5f);
+			m_height = static_cast<int>(imageRect.y * scale + 0.5f);
 		}
 
 		// Remove the loaded surface now that we have a texture
