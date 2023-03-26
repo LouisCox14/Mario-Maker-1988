@@ -57,4 +57,5 @@ class LevelCreator : GameScreen
 		void PlaceTile(Vector2D gridPosition, tileData tileInfo);
 		int GetTileIndexAtGridPos(Vector2D gridPosition);
 		int GetButtonIndex(std::vector<ButtonUI*> buttonVector, ButtonUI* targetButton);
+		void ExportFile();
 };

@@ -30,9 +30,8 @@ void PhysicsObject::AddGravity(float deltaTime)
 
 void PhysicsObject::ResolveCollisions(const std::vector<Tile*>& tileMap)
 {
+	sidesColliding = { NONE, NONE, NONE, NONE };
 	coll.position = position + (coll.size / 2);
-	
-	for (auto& a : sidesColliding) a = NONE;
 
 	for (Tile* tile : tileMap)
 	{

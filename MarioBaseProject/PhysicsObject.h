@@ -22,7 +22,7 @@ class PhysicsObject
 		Vector2D drag;
 
 		BoxCollider coll;
-		COLLISION_SIDES sidesColliding[4];
+		std::array<COLLISION_SIDES, 4> sidesColliding;
 
 	protected:
 		Vector2D oldPosition;

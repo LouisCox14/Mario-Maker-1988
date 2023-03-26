@@ -1,8 +1,8 @@
 #pragma once
-#include <string>
 #include <vector>
 #include <string>
 #include <array>
+#include <map>
 #include "Commons.h"
 
 enum TILE_TYPE
@@ -68,6 +68,7 @@ struct tileData
 
 		spriteType = SINGLE;
 		colliderType = SINGLE;
+		collisionSides = { TOP, BOTTOM, RIGHT, LEFT };
 
 		isAnimated = true;
 		animationFrames = _animationFrames;
@@ -88,4 +89,13 @@ const std::vector<tileData> specialTiles = {
 
 const std::vector<tileData> decorationTiles = {
 	tileData("Shrubbery", COMPOSITE, SINGLE, {NONE, NONE, RIGHT, LEFT}, {NONE, NONE, NONE, NONE})
+};
+
+const std::map<std::string, tileData> allTiles = {
+	{"Ground", terrainTiles[0]},
+	{"Green Block", terrainTiles[1]},
+	{"Shiny Block", specialTiles[0]},
+	{"Question Block", specialTiles[1]},
+	{"Pipe", specialTiles[2]},
+	{"Shrubbery", decorationTiles[0]}
 };

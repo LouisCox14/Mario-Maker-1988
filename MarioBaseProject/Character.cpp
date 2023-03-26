@@ -6,7 +6,6 @@
 #include "GameScreen.h"
 #include <vector>
 
-
 Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition) : cameraPosition(_cameraPosition)
 {
 	m_renderer = renderer;
@@ -105,7 +104,6 @@ void Character::SetPosition(Vector2D new_position)
 {
 	m_position = new_position;
 }
-
 
 Vector2D Character::GetPosition()
 {

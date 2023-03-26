@@ -1,4 +1,4 @@
-/*#pragma once
+#pragma once
 #include "Commons.h"
 #include "GameScreen.h"
 #include "Character.h"
@@ -17,9 +17,7 @@ class LevelScreen : GameScreen
 		void Render() override;
 		void Update(float deltaTime, SDL_Event e) override;
 
-		float LoadFromTXT(std::string levelPath);
-		std::string GetFileName(tileData tileInfo, int index, std::string levelFile, int rows, int columns);
-		int LongestLine(std::string str);
+		void LoadFromJSON(std::string levelPath);
 
 		std::vector<Tile*> tileMap;
 		std::vector<Tile*> GetOnScreenTiles();
@@ -27,6 +25,5 @@ class LevelScreen : GameScreen
 	private:
 		std::vector<Character*> characters;
 
-		bool SetUpLevel(float levelScale, bool multiplayer);
+		bool SetUpLevel(bool multiplayer);
 };
-*/

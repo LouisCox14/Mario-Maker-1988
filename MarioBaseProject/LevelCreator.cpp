@@ -1,4 +1,10 @@
 #include "LevelCreator.h"
+#include "Commons.h"
+#include <string>
+#include <vector>
+#include <fstream>
+#include <iostream>
+#include <json\json.h>
 
 LevelCreator::LevelCreator(SDL_Renderer* renderer) : GameScreen(renderer)
 {
@@ -111,6 +117,9 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 					case SDLK_s:
 						camMovement.y += 1;
 						break;
+					case SDLK_e:
+						ExportFile();
+						break;
 				}
 
 				break;
@@ -177,13 +186,12 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 			int targetTile = GetTileIndexAtGridPos(mouseGridPos);
 			if (targetTile != -1)
 			{
-				Vector2D tempTilePos = tileMap[targetTile]->position;
 				tileData tempTileInfo = tileMap[targetTile]->tileInfo;
 
 				delete tileMap[targetTile];
 				tileMap.erase(tileMap.begin() + targetTile);
 
-				ReloadNeighbouringComposites(PixelToGridPos(tempTilePos), tempTileInfo);
+				ReloadNeighbouringComposites(mouseGridPos, tempTileInfo);
 			}
 		}
 	}
@@ -344,4 +352,40 @@ int LevelCreator::GetTileIndexAtGridPos(Vector2D gridPosition)
 	}
 
 	return -1;
+}
+
+void LevelCreator::ExportFile()
+{
+	std::ofstream fout("Levels/Test.json", std::ios::out);
+
+	Json::Value levelObject;
+
+	int i = 0;
+	Json::Value tiles(Json::arrayValue);
+	for (Tile* tile : tileMap)
+	{
+		Json::Value currentTile;
+		currentTile["x"] = tile->position.x;
+		currentTile["y"] = tile->position.y;
+		currentTile["ImageDirectory"] = tile->tilePath;
+
+		Json::Value collisionDirections(Json::arrayValue);
+		for (COLLISION_SIDES collSide : tile->coll.collisionSides)
+		{
+			collisionDirections.append(collSide);
+		}
+		currentTile["CollisionDirections"] = collisionDirections;
+
+		currentTile["TileDataReference"] = tile->tileInfo.fileName;
+
+		tiles.append(currentTile);
+		i++;
+	}
+
+	levelObject["Tiles"] = tiles;
+
+	Json::StyledWriter styledWriter;
+	fout << styledWriter.write(levelObject);
+
+	fout.close();
 }

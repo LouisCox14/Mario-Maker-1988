@@ -146,7 +146,7 @@ bool Update()
 			switch (e.key.keysym.sym)
 			{
 				case SDLK_ESCAPE:
-					return true;
+					game_screen_manager->ChangeScreen(SCREEN_LEVEL1);
 					break;
 			}
 	}

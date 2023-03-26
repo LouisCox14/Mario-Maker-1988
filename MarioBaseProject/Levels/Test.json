@@ -1,0 +1,725 @@
+{
+   "Tiles" : [
+      {
+         "CollisionDirections" : [ 0, 4, 4, 3 ],
+         "ImageDirectory" : "Tiles/Ground Top Left.png",
+         "TileDataReference" : "Ground",
+         "x" : 0.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 32.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 64.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 96.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 128.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 160.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 192.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 224.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 2, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top Right.png",
+         "TileDataReference" : "Ground",
+         "x" : 256.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 3 ],
+         "ImageDirectory" : "Tiles/Ground Left.png",
+         "TileDataReference" : "Ground",
+         "x" : 0.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 32.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 64.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 96.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 128.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 160.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 192.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 224.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 256.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 288.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 320.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 352.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 384.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 416.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 448.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 480.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 512.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 2, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top Right.png",
+         "TileDataReference" : "Ground",
+         "x" : 544.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 32.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 64.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 96.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 3 ],
+         "ImageDirectory" : "Tiles/Ground Left.png",
+         "TileDataReference" : "Ground",
+         "x" : 0.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 128.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 160.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 192.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 224.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 256.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 288.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 320.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 352.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 384.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 416.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 448.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 480.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 512.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground.png",
+         "TileDataReference" : "Ground",
+         "x" : 544.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 576.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 608.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 640.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 672.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 704.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 736.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 768.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top.png",
+         "TileDataReference" : "Ground",
+         "x" : 800.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 2, 4 ],
+         "ImageDirectory" : "Tiles/Ground Top Right.png",
+         "TileDataReference" : "Ground",
+         "x" : 832.0,
+         "y" : 384.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 3 ],
+         "ImageDirectory" : "Tiles/Pipe Left.png",
+         "TileDataReference" : "Pipe",
+         "x" : 0.0,
+         "y" : 288.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 3 ],
+         "ImageDirectory" : "Tiles/Pipe Top Left.png",
+         "TileDataReference" : "Pipe",
+         "x" : 0.0,
+         "y" : 256.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 2, 4 ],
+         "ImageDirectory" : "Tiles/Pipe Top Right.png",
+         "TileDataReference" : "Pipe",
+         "x" : 32.0,
+         "y" : 256.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 2, 4 ],
+         "ImageDirectory" : "Tiles/Pipe Right.png",
+         "TileDataReference" : "Pipe",
+         "x" : 32.0,
+         "y" : 288.0
+      },
+      {
+         "CollisionDirections" : [ 0, 1, 2, 3 ],
+         "ImageDirectory" : "Tiles/Shiny Block 1.png",
+         "TileDataReference" : "Shiny Block",
+         "x" : 512.0,
+         "y" : 192.0
+      },
+      {
+         "CollisionDirections" : [ 0, 1, 2, 3 ],
+         "ImageDirectory" : "Tiles/Shiny Block 1.png",
+         "TileDataReference" : "Shiny Block",
+         "x" : 320.0,
+         "y" : 192.0
+      },
+      {
+         "CollisionDirections" : [ 0, 1, 2, 3 ],
+         "ImageDirectory" : "Tiles/Shiny Block 1.png",
+         "TileDataReference" : "Shiny Block",
+         "x" : 352.0,
+         "y" : 192.0
+      },
+      {
+         "CollisionDirections" : [ 0, 1, 2, 3 ],
+         "ImageDirectory" : "Tiles/Shiny Block 1.png",
+         "TileDataReference" : "Shiny Block",
+         "x" : 480.0,
+         "y" : 192.0
+      },
+      {
+         "CollisionDirections" : [ 0, 1, 2, 3 ],
+         "ImageDirectory" : "Tiles/Shiny Block 1.png",
+         "TileDataReference" : "Shiny Block",
+         "x" : 416.0,
+         "y" : 192.0
+      },
+      {
+         "CollisionDirections" : [ 0, 1, 2, 3 ],
+         "ImageDirectory" : "Tiles/Question Block 1.png",
+         "TileDataReference" : "Question Block",
+         "x" : 448.0,
+         "y" : 192.0
+      },
+      {
+         "CollisionDirections" : [ 0, 1, 2, 3 ],
+         "ImageDirectory" : "Tiles/Question Block 1.png",
+         "TileDataReference" : "Question Block",
+         "x" : 384.0,
+         "y" : 192.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Bottom Left.png",
+         "TileDataReference" : "Green Block",
+         "x" : 640.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Left.png",
+         "TileDataReference" : "Green Block",
+         "x" : 640.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Left.png",
+         "TileDataReference" : "Green Block",
+         "x" : 640.0,
+         "y" : 288.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Top.png",
+         "TileDataReference" : "Green Block",
+         "x" : 672.0,
+         "y" : 256.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Top.png",
+         "TileDataReference" : "Green Block",
+         "x" : 704.0,
+         "y" : 256.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block.png",
+         "TileDataReference" : "Green Block",
+         "x" : 704.0,
+         "y" : 288.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Right.png",
+         "TileDataReference" : "Green Block",
+         "x" : 736.0,
+         "y" : 288.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Right.png",
+         "TileDataReference" : "Green Block",
+         "x" : 736.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Bottom Right.png",
+         "TileDataReference" : "Green Block",
+         "x" : 736.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Bottom.png",
+         "TileDataReference" : "Green Block",
+         "x" : 704.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Bottom.png",
+         "TileDataReference" : "Green Block",
+         "x" : 672.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block.png",
+         "TileDataReference" : "Green Block",
+         "x" : 672.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block.png",
+         "TileDataReference" : "Green Block",
+         "x" : 672.0,
+         "y" : 288.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block.png",
+         "TileDataReference" : "Green Block",
+         "x" : 704.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Top Right.png",
+         "TileDataReference" : "Green Block",
+         "x" : 736.0,
+         "y" : 256.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Top Left.png",
+         "TileDataReference" : "Green Block",
+         "x" : 640.0,
+         "y" : 256.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Top Left.png",
+         "TileDataReference" : "Green Block",
+         "x" : 800.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Top Right.png",
+         "TileDataReference" : "Green Block",
+         "x" : 832.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Bottom Right.png",
+         "TileDataReference" : "Green Block",
+         "x" : 832.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Bottom Left.png",
+         "TileDataReference" : "Green Block",
+         "x" : 800.0,
+         "y" : 352.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Bottom.png",
+         "TileDataReference" : "Green Block",
+         "x" : 160.0,
+         "y" : 96.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Top.png",
+         "TileDataReference" : "Green Block",
+         "x" : 160.0,
+         "y" : 64.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Top.png",
+         "TileDataReference" : "Green Block",
+         "x" : 192.0,
+         "y" : 64.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Top.png",
+         "TileDataReference" : "Green Block",
+         "x" : 224.0,
+         "y" : 64.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Top Right.png",
+         "TileDataReference" : "Green Block",
+         "x" : 256.0,
+         "y" : 64.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Bottom Right.png",
+         "TileDataReference" : "Green Block",
+         "x" : 256.0,
+         "y" : 96.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Bottom.png",
+         "TileDataReference" : "Green Block",
+         "x" : 192.0,
+         "y" : 96.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Bottom.png",
+         "TileDataReference" : "Green Block",
+         "x" : 224.0,
+         "y" : 96.0
+      },
+      {
+         "CollisionDirections" : [ 0, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Top Left.png",
+         "TileDataReference" : "Green Block",
+         "x" : 128.0,
+         "y" : 64.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Green Block Bottom Left.png",
+         "TileDataReference" : "Green Block",
+         "x" : 128.0,
+         "y" : 96.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Shrubbery Left.png",
+         "TileDataReference" : "Shrubbery",
+         "x" : 288.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Shrubbery.png",
+         "TileDataReference" : "Shrubbery",
+         "x" : 320.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Shrubbery.png",
+         "TileDataReference" : "Shrubbery",
+         "x" : 352.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Shrubbery Right.png",
+         "TileDataReference" : "Shrubbery",
+         "x" : 384.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Shrubbery Left.png",
+         "TileDataReference" : "Shrubbery",
+         "x" : 128.0,
+         "y" : 288.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Shrubbery Right.png",
+         "TileDataReference" : "Shrubbery",
+         "x" : 160.0,
+         "y" : 288.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Shrubbery Right.png",
+         "TileDataReference" : "Shrubbery",
+         "x" : 544.0,
+         "y" : 320.0
+      },
+      {
+         "CollisionDirections" : [ 4, 4, 4, 4 ],
+         "ImageDirectory" : "Tiles/Shrubbery Left.png",
+         "TileDataReference" : "Shrubbery",
+         "x" : 512.0,
+         "y" : 320.0
+      }
+   ]
+}

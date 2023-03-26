@@ -125,7 +125,7 @@ struct BoxCollider
 	Vector2D size;
 	std::array<COLLISION_SIDES, 4> collisionSides;
 
-	BoxCollider(Vector2D _position = Vector2D(0, 0), Vector2D _size = Vector2D(0, 0), std::array<COLLISION_SIDES, 4> _collisionSides = { TOP, RIGHT, BOTTOM, LEFT })
+	BoxCollider(Vector2D _position = Vector2D(0, 0), Vector2D _size = Vector2D(0, 0), std::array<COLLISION_SIDES, 4> _collisionSides = { TOP, BOTTOM, RIGHT, LEFT })
 	{
 		position = _position;
 		size = _size;
@@ -148,14 +148,14 @@ struct BoxCollider
 
 		if (abs(position.x - other.position.x) < size.x / 2 + other.size.x / 2 && abs(position.y - other.position.y) < size.y / 2 + other.size.y / 2 - 1)
 		{
-			if (collisionSides[(int)LEFT] == LEFT && other.collisionSides[(int)RIGHT] == RIGHT && position.x - size.x / 2 > other.position.x + other.size.x / 2 - 2)
-			{
-				return LEFT;
-			}
-			else if (collisionSides[(int)RIGHT] == RIGHT && other.collisionSides[(int)LEFT] == LEFT && position.x + size.x / 2 < other.position.x - other.size.x / 2 + 2)
+			if (collisionSides[(int)RIGHT] == RIGHT && other.collisionSides[(int)LEFT] == LEFT && position.x + size.x / 2 < other.position.x - other.size.x / 2 + 2)
 			{
 				return RIGHT;
 			}
+			else if (collisionSides[(int)LEFT] == LEFT && other.collisionSides[(int)RIGHT] == RIGHT && position.x - size.x / 2 > other.position.x + other.size.x / 2 - 2)
+			{
+				return LEFT;
+			} 
 		}
 
 		return NONE;

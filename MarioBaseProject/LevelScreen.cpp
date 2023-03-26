@@ -1,13 +1,17 @@
-/*#include "LevelScreen.h"
+#include "LevelScreen.h"
 #include "Texture2D.h"
 #include "SmallMario.h"
 #include "SmallLuigi.h"
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <json\json.h>
+#include <json\value.h>
 
 LevelScreen::LevelScreen(SDL_Renderer* renderer, std::string levelPath, bool multiplayer) : GameScreen(renderer)
 {
-	SetUpLevel(LoadFromTXT(levelPath), multiplayer);
+	LoadFromJSON(levelPath);
+	SetUpLevel(multiplayer);
 }
 
 LevelScreen::~LevelScreen()
@@ -64,170 +68,61 @@ void LevelScreen::Update(float deltaTime, SDL_Event e)
 	GameScreen::cameraPosition.x = cameraX;
 }
 
-bool LevelScreen::SetUpLevel(float levelScale, bool multiplayer)
+void LevelScreen::LoadFromJSON(std::string levelPath)
 {
+	std::ifstream fin(levelPath, std::ios::in | std::ios::binary);
+
+	if (!fin)
+	{
+		std::cout << "Could not access level file: " << levelPath << std::endl;
+	}
+
+	Json::Value json;
+	Json::Reader reader;
+
+	reader.parse(fin, json);
+
+	for (Json::Value tile : json["Tiles"])
+	{
+		Vector2D tilePosition = Vector2D(tile["x"].asFloat(), tile["y"].asFloat());
+		tileData tileInfo = allTiles.at(tile["TileDataReference"].asString());
+		std::string filePath = tile["ImageDirectory"].asString();
+
+		std::array<COLLISION_SIDES, 4> collSides = { NONE, NONE, NONE, NONE };
+		for (int i = 0; i < 4; i++)
+		{
+			collSides[i] = static_cast<COLLISION_SIDES>(tile["CollisionDirections"][i].asInt());
+		}
+
+		tileMap.push_back(new Tile(m_renderer, tilePosition, tileInfo, filePath, collSides, CAMERA_SCALE));
+	}
+
+	fin.close();
+}
+
+bool LevelScreen::SetUpLevel(bool multiplayer)
+{
+	int furthestPoint = 0;
+
+	for (Tile* tile : tileMap)
+	{
+		if (tile->position.x + TILE_RESOLUTION * CAMERA_SCALE > furthestPoint)
+		{
+			furthestPoint = tile->position.x + TILE_RESOLUTION * CAMERA_SCALE;
+		}
+	}
+
+	GameScreen::levelWidth = furthestPoint;
+
 	// Set up player character
-	characters.push_back((Character*)new SmallMario(m_renderer, "Sprites/Small Mario/Idle.png", Vector2D(64, 64), levelScale, cameraPosition));
+	characters.push_back((Character*)new SmallMario(m_renderer, "Sprites/Small Mario/Idle.png", Vector2D(128, 64), CAMERA_SCALE, cameraPosition));
 
 	if (multiplayer)
 	{
-		characters.push_back((Character*)new SmallLuigi(m_renderer, "Sprites/Small Luigi/Idle.png", Vector2D(64, 64), levelScale, cameraPosition));
+		characters.push_back((Character*)new SmallLuigi(m_renderer, "Sprites/Small Luigi/Idle.png", Vector2D(128, 64), CAMERA_SCALE, cameraPosition));
 	}
 
 	return true;
-}
-
-float LevelScreen::LoadFromTXT(std::string levelPath)
-{
-	std::ifstream levelFile(levelPath);
-	std::string levelString;
-
-	if (levelFile.is_open()) {
-		while (levelFile) {
-			levelString += levelFile.get();
-		}
-	}
-
-	int rows = std::count(levelString.begin(), levelString.end(), '\n');
-	rows += (!levelString.empty() && levelString.back() != '\n');
-
-	int columns = LongestLine(levelString);
-
-	float tileScale = (float)SCREEN_HEIGHT / (float)TILE_RESOLUTION / (float)rows;
-	levelWidth = (float)columns * (float)TILE_RESOLUTION * tileScale;
-
-	Vector2D tilePos = Vector2D(0, 0);
-
-	for (int row = 0; row < rows; row++)
-	{
-		int index = row * (columns + 1);
-		int spaceRequired = -1;
-
-		while (spaceRequired == -1)
-		{
-			if (index == levelString.size() - 1)
-			{
-				spaceRequired = 0;
-				break;
-			}
-			else if (levelString[index] == '\n')
-			{
-				spaceRequired = columns - (index % (columns + 1));
-				break;
-			}
-
-			index++;
-		}
-
-		if (spaceRequired > 0)
-		{
-			std::string whiteSpace(spaceRequired, ' ');
-			levelString = levelString.insert(index, whiteSpace);
-		}
-	}
-
-	for (int i = 0; i < levelString.size() - 1; i++)
-	{
-		if (levelString[i] == ' ')
-		{
-			tilePos.x += (float)TILE_RESOLUTION * tileScale;
-			continue;
-		}
-		else if (levelString[i] == '\n')
-		{
-			tilePos.y += (float)TILE_RESOLUTION * tileScale;
-			tilePos.x = 0;
-
-			continue;
-		}
-
-		tileData tileInfo = tileDict.at(levelString[i]);
-
-		Tile* currentTile = new Tile(m_renderer, tilePos, GetFileName(tileInfo, i, levelString, rows, columns), tileInfo, tileScale);
-		tileMap.push_back(currentTile);
-
-		tilePos.x += TILE_RESOLUTION * tileScale;
-	}
-
-	return tileScale;
-}
-
-std::string LevelScreen::GetFileName(tileData tileInfo, int index, std::string levelString, int rows, int columns)
-{
-	std::string tileName = tileInfo.fileName;
-
-	if (tileInfo.autoTileSides[(int)TOP] == TOP)
-	{
-		if (index > columns)
-		{
-			if (levelString[index] != levelString[index - (columns + 1)])
-			{
-				tileName += " Top";
-			}
-		}
-	}
-	if (tileInfo.autoTileSides[(int)BOTTOM] == BOTTOM)
-	{
-		if (index < (columns + 1) * (rows - 1))
-		{
-			if (levelString[index] != levelString[index + (columns + 1)])
-			{
-				tileName += " Bottom";
-			}
-		}
-	}
-	if (tileInfo.autoTileSides[(int)RIGHT] == RIGHT && index != 0)
-	{
-		if ((index + 2) % (columns + 1) != 0)
-		{
-			if (levelString[index] != levelString[index + 1])
-			{
-				tileName += " Right";
-			}
-		}
-	}
-	if (tileInfo.autoTileSides[(int)LEFT] == LEFT && index != 0)
-	{
-		if (index % (columns + 1) != 0)
-		{
-			if (levelString[index] != levelString[index - 1])
-			{
-				tileName += " Left";
-			}
-		}
-	}
-
-	return std::string("Tiles/") + tileName + ".png";
-}
-
-int LevelScreen::LongestLine(std::string str)
-{
-	int largest = 0;
-	int current = 0;
-
-	for (int i = 0; i < str.size() - 1; i++)
-	{
-		if (str[i] == '\n')
-		{
-			if (current > largest)
-			{
-				largest = current;
-			}
-
-			current = 0;
-		}
-		else
-		{
-			current++;
-		}
-	}
-
-	if (current > largest)
-	{
-		largest = current;
-	}
-
-	return largest;
 }
 
 std::vector<Tile*> LevelScreen::GetOnScreenTiles()
@@ -244,4 +139,3 @@ std::vector<Tile*> LevelScreen::GetOnScreenTiles()
 
 	return onscreenTiles;
 }
-*/

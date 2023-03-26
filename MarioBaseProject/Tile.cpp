@@ -20,6 +20,10 @@ Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, tileData _tileInfo, s
 	{
 		CalculateCompositeCollider(tileMap);
 	}
+	else
+	{
+		coll.collisionSides = _tileInfo.collisionSides;
+	}
 
 	if (tileInfo.spriteType == COMPOSITE)
 	{
@@ -28,14 +32,34 @@ Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, tileData _tileInfo, s
 
 	if (tileInfo.isAnimated)
 	{
-		Animation tempAnim = Animation(std::vector<std::string>{}, tileInfo.animationDelay, true);
+		SetupAnimator();
+	}
+}
 
-		for (int i = 1; i < tileInfo.animationFrames + 1; i++)
-		{
-			tempAnim.framePaths.push_back(tileInfo.fileName + " " + std::to_string(i) + ".png");
-		}
+Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, tileData _tileInfo, std::string _filePath, std::array<COLLISION_SIDES, 4> collSides, float scale)
+{
+	m_renderer = renderer;
+	position = startPosition;
+	tileInfo = _tileInfo;
 
-		m_animator = new Animator(*m_tileTexture, std::map<std::string, Animation>{{"Idle", tempAnim}}, std::string("Idle"), std::string("Tiles/"));
+	// Load texture
+	m_tileTexture = new Texture2D(m_renderer, scale);
+	tilePath = _filePath;
+	m_tileTexture->LoadFromFile(_filePath);
+
+	Vector2D textureDimensions = Vector2D(m_tileTexture->GetHeight(), m_tileTexture->GetWidth());
+	coll = BoxCollider(position + (textureDimensions / 2), textureDimensions);
+
+	if (collSides != std::array<COLLISION_SIDES, 4> {NONE, NONE, NONE, NONE})
+	{
+		hasCollider = true;
+		coll.collisionSides = collSides;
+	}
+
+	if (tileInfo.isAnimated)
+	{
+		isAnimated = true;
+		SetupAnimator();
 	}
 }
 
@@ -107,42 +131,56 @@ std::string Tile::CalculateCompositeSprite(std::vector<Tile*> tileMap)
 
 void Tile::CalculateCompositeCollider(std::vector<Tile*> tileMap)
 {
-	std::array<COLLISION_SIDES, 4> tempCollisionSides = { TOP, RIGHT, LEFT, BOTTOM };
+	std::array<COLLISION_SIDES, 4> tempCollisionSides = { NONE, NONE, NONE, NONE };
 
-	for (COLLISION_SIDES direction : tileInfo.collisionSides)
+	int i = 0;
+	for (COLLISION_SIDES direction : tempCollisionSides)
 	{
 		int tempIndex = -1;
-		switch (direction)
+		switch (i)
 		{
 		case TOP:
-			tempIndex = GetTileIndexAtPixelPos(position + (Vector2D(0, -1) * m_tileTexture->GetHeight()), tileMap);
-			if (tempIndex == -1 || tileMap[tempIndex]->tileInfo.fileName != tileInfo.fileName)
+			if (tileInfo.collisionSides[TOP] == TOP)
 			{
-				tempCollisionSides[TOP] = NONE;
+				tempIndex = GetTileIndexAtPixelPos(position + (Vector2D(0, -1) * m_tileTexture->GetHeight()), tileMap);
+				if (tempIndex == -1 || tileMap[tempIndex]->tileInfo.fileName != tileInfo.fileName)
+				{
+					tempCollisionSides[TOP] = TOP;
+				}
 			}
 			break;
 		case RIGHT:
-			tempIndex = GetTileIndexAtPixelPos(position + (Vector2D(1, 0) * m_tileTexture->GetWidth()), tileMap);
-			if (tempIndex == -1 || tileMap[tempIndex]->tileInfo.fileName != tileInfo.fileName)
+			if (tileInfo.collisionSides[RIGHT] == RIGHT)
 			{
-				tempCollisionSides[RIGHT] = NONE;
+				tempIndex = GetTileIndexAtPixelPos(position + (Vector2D(1, 0) * m_tileTexture->GetWidth()), tileMap);
+				if (tempIndex == -1 || tileMap[tempIndex]->tileInfo.fileName != tileInfo.fileName)
+				{
+					tempCollisionSides[RIGHT] = RIGHT;
+				}
 			}
 			break;
 		case BOTTOM:
-			tempIndex = GetTileIndexAtPixelPos(position + (Vector2D(0, 1) * m_tileTexture->GetHeight()), tileMap);
-			if (tempIndex == -1 || tileMap[tempIndex]->tileInfo.fileName != tileInfo.fileName)
+			if (tileInfo.collisionSides[BOTTOM] == BOTTOM)
 			{
-				tempCollisionSides[BOTTOM] = NONE;
+				tempIndex = GetTileIndexAtPixelPos(position + (Vector2D(0, 1) * m_tileTexture->GetHeight()), tileMap);
+				if (tempIndex == -1 || tileMap[tempIndex]->tileInfo.fileName != tileInfo.fileName)
+				{
+					tempCollisionSides[BOTTOM] = BOTTOM;
+				}
 			}
 			break;
 		case LEFT:
-			tempIndex = GetTileIndexAtPixelPos(position + (Vector2D(-1, 0) * m_tileTexture->GetWidth()), tileMap);
-			if (tempIndex == -1 || tileMap[tempIndex]->tileInfo.fileName != tileInfo.fileName)
+			if (tileInfo.collisionSides[LEFT] == LEFT)
 			{
-				tempCollisionSides[LEFT] = NONE;
+				tempIndex = GetTileIndexAtPixelPos(position + (Vector2D(-1, 0) * m_tileTexture->GetWidth()), tileMap);
+				if (tempIndex == -1 || tileMap[tempIndex]->tileInfo.fileName != tileInfo.fileName)
+				{
+					tempCollisionSides[LEFT] = LEFT;
+				}
 			}
 			break;
 		}
+		i++;
 	}
 
 	coll.collisionSides = tempCollisionSides;
@@ -171,6 +209,7 @@ bool Tile::SetUpTile(std::vector<Tile*> tileMap, float scale)
 	}
 
 	imagePath += ".png";
+	tilePath = imagePath;
 
 	if (!m_tileTexture->LoadFromFile(imagePath))
 	{
@@ -181,13 +220,27 @@ bool Tile::SetUpTile(std::vector<Tile*> tileMap, float scale)
 	return true;
 }
 
+void Tile::SetupAnimator()
+{
+	Animation tempAnim = Animation(std::vector<std::string>{}, tileInfo.animationDelay, true);
+
+	for (int i = 1; i < tileInfo.animationFrames + 1; i++)
+	{
+		tempAnim.framePaths.push_back(tileInfo.fileName + " " + std::to_string(i) + ".png");
+	}
+
+	m_animator = new Animator(*m_tileTexture, std::map<std::string, Animation>{ {"Idle", tempAnim}}, std::string("Idle"), std::string("Tiles/"));
+}
+
 bool Tile::LoadCompositeSprite(std::vector<Tile*> tileMap)
 {
 	std::string imagePath = "Tiles/" + CalculateCompositeSprite(tileMap) + ".png";
+	tilePath = imagePath;
 
 	if (!m_tileTexture->LoadFromFile(imagePath))
 	{
 		imagePath = "Tiles/" + tileInfo.fileName + tileInfo.defaultSuffix + ".png";
+		tilePath = imagePath;
 
 		if (!m_tileTexture->LoadFromFile(imagePath))
 		{
