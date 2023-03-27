@@ -21,7 +21,7 @@ enum UI_TABS
 class LevelCreator : GameScreen
 {
 	public:
-		LevelCreator(SDL_Renderer* renderer);
+		LevelCreator(SDL_Renderer* renderer, std::string importPath = "");
 		~LevelCreator();
 
 		void Render() override;
@@ -58,4 +58,5 @@ class LevelCreator : GameScreen
 		int GetTileIndexAtGridPos(Vector2D gridPosition);
 		int GetButtonIndex(std::vector<ButtonUI*> buttonVector, ButtonUI* targetButton);
 		void ExportFile();
+		void ImportFile(std::string importPath);
 };

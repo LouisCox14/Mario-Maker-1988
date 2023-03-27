@@ -115,11 +115,11 @@ bool LevelScreen::SetUpLevel(bool multiplayer)
 	GameScreen::levelWidth = furthestPoint;
 
 	// Set up player character
-	characters.push_back((Character*)new SmallMario(m_renderer, "Sprites/Small Mario/Idle.png", Vector2D(128, 64), CAMERA_SCALE, cameraPosition));
+	characters.push_back((Character*)new SmallMario(m_renderer, "Sprites/Small Mario/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
 
 	if (multiplayer)
 	{
-		characters.push_back((Character*)new SmallLuigi(m_renderer, "Sprites/Small Luigi/Idle.png", Vector2D(128, 64), CAMERA_SCALE, cameraPosition));
+		characters.push_back((Character*)new SmallLuigi(m_renderer, "Sprites/Small Luigi/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
 	}
 
 	return true;

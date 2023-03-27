@@ -14,7 +14,9 @@ class GameScreenManager
 		void Render();
 		void Update(float deltaTime, SDL_Event e);
 
-		void ChangeScreen(SCREENS new_screen);
+		void ChangeScreen(SCREENS new_screen, std::string fileDirectory = "");
+
+		bool newScreen;
 
 	private:
 		SDL_Renderer* m_renderer;

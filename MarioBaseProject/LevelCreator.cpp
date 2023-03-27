@@ -6,7 +6,7 @@
 #include <iostream>
 #include <json\json.h>
 
-LevelCreator::LevelCreator(SDL_Renderer* renderer) : GameScreen(renderer)
+LevelCreator::LevelCreator(SDL_Renderer* renderer, std::string importPath) : GameScreen(renderer)
 {
 	camSpeed = 100.0f;
 	camScale = 2.0f;
@@ -22,6 +22,11 @@ LevelCreator::LevelCreator(SDL_Renderer* renderer) : GameScreen(renderer)
 	renderOrderUI = { TERRAIN, SPECIAL, ENEMIES, GAME_LOGIC, DECORATIONS, SIDEBAR };
 
 	selectedTile = terrainTiles[0];
+
+	if (importPath != "")
+	{
+		ImportFile(importPath);
+	}
 }
 
 LevelCreator::~LevelCreator()
@@ -32,7 +37,7 @@ LevelCreator::~LevelCreator()
 void LevelCreator::Render()
 {
 	SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
-	Vector2D gridOffset = GameScreen::cameraPosition % (TILE_RESOLUTION * camScale);
+	Vector2D gridOffset = GameScreen::cameraPosition % (TILE_RESOLUTION * camScale) + 1;
 
 	for (float x = 0; x < SCREEN_WIDTH + TILE_RESOLUTION * camScale; x += TILE_RESOLUTION * camScale)
 	{
@@ -388,4 +393,36 @@ void LevelCreator::ExportFile()
 	fout << styledWriter.write(levelObject);
 
 	fout.close();
+}
+
+void LevelCreator::ImportFile(std::string importPath)
+{
+	std::ifstream fin(importPath, std::ios::in | std::ios::binary);
+
+	if (!fin)
+	{
+		std::cout << "Could not access level file: " << importPath << std::endl;
+	}
+
+	Json::Value json;
+	Json::Reader reader;
+
+	reader.parse(fin, json);
+
+	for (Json::Value tile : json["Tiles"])
+	{
+		Vector2D tilePosition = Vector2D(tile["x"].asFloat(), tile["y"].asFloat());
+		tileData tileInfo = allTiles.at(tile["TileDataReference"].asString());
+		std::string filePath = tile["ImageDirectory"].asString();
+
+		std::array<COLLISION_SIDES, 4> collSides = { NONE, NONE, NONE, NONE };
+		for (int i = 0; i < 4; i++)
+		{
+			collSides[i] = static_cast<COLLISION_SIDES>(tile["CollisionDirections"][i].asInt());
+		}
+
+		tileMap.push_back(new Tile(m_renderer, tilePosition, tileInfo, filePath, collSides, CAMERA_SCALE));
+	}
+
+	fin.close();
 }
