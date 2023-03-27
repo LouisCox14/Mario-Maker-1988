@@ -7,52 +7,119 @@ Titlescreen::Titlescreen(SDL_Renderer* renderer, GameScreenManager* _screenManag
 	screenManager = _screenManager;
 
 	background = new Texture2D(m_renderer, 2.0f);
-	background->LoadFromFile("UI/Titlescreen.png");
+	background->LoadFromFile("UI/Titlescreen/Titlescreen.png");
 
-	Animation introAnim = Animation(std::vector<std::string>{}, 0.075f, false);
-	for (int i = 1; i < 24; i++)
-	{
-		introAnim.framePaths.push_back("Titlescreen Open " + std::to_string(i) + ".png");
-	}
+	curtain = new Texture2D(m_renderer, 2.0f);
+	curtain->LoadFromFile("UI/Titlescreen/Curtain.png");
+	curtainDrawTime = 2.0f;
 
-	backgroundAnimator = new Animator(*background, std::map<std::string, Animation>{
-		{"Idle", Animation(std::vector<std::string>{"Titlescreen.png", "Titlescreen 1.png", "Titlescreen 2.png", "Titlescreen 3.png", "Titlescreen 2.png",
-			"Titlescreen 1.png", "Titlescreen.png", "Titlescreen 4.png", "Titlescreen 5.png", "Titlescreen 6.png", "Titlescreen 5.png",
-		"Titlescreen 4.png", "Titlescreen.png"}, 0.2f, true)},
-		{"Intro", introAnim}
-	}, std::string("Idle"), std::string("UI/Titlescreen/"));
+	title = new Texture2D(m_renderer, 2.0f);
+	title->LoadFromFile("UI/Titlescreen/Title.png");
+	titleFloatSpeed = 0.35f;
+	titleFloatOffset = 5.0f;
 
-	backgroundAnimator->SetAnimation("Intro");
+	version = new Texture2D(m_renderer, 2.0f);
+	version->LoadFromFile("UI/Titlescreen/Version.png");
+
+	playButton = new ButtonUI(renderer, this, Vector2D(150, 260), std::string("UI/Titlescreen/Play Button.png"), 2.0f);
+	multiplayerButton = new ButtonUI(renderer, this, Vector2D(150, 285), std::string("UI/Titlescreen/Multiplayer Button.png"), 2.0f);
+	editButton = new ButtonUI(renderer, this, Vector2D(150, 310), std::string("UI/Titlescreen/Edit Button.png"), 2.0f);
+	createButton = new ButtonUI(renderer, this, Vector2D(150, 335), std::string("UI/Titlescreen/Create Button.png"), 2.0f);
 }
 
 Titlescreen::~Titlescreen()
 {
 	delete background;
 	background = nullptr;
+
+	delete title;
+	title = nullptr;
+
+	delete version;
+	version = nullptr;
+
+	delete curtain;
+	curtain = nullptr;
+
+	delete playButton;
+	playButton = nullptr;
+
+	delete multiplayerButton;
+	multiplayerButton = nullptr;
+
+	delete editButton;
+	editButton = nullptr;
+
+	delete createButton;
+	createButton = nullptr;
 }
 
 void Titlescreen::Render()
 {
 	background->Render(Vector2D(0, 0), SDL_FLIP_NONE);
+	title->Render(Vector2D(SCREEN_WIDTH / 2 - title->GetWidth() / 2, 40 + sin(SDL_GetTicks() / 100 * titleFloatSpeed) * titleFloatOffset), SDL_FLIP_NONE);
+	version->Render(Vector2D(SCREEN_WIDTH / 2 - version->GetWidth() / 2, 170), SDL_FLIP_NONE);
+
+	playButton->Render();
+	multiplayerButton->Render();
+	editButton->Render();
+	createButton->Render();
+
+	if (curtainPosition > -SCREEN_HEIGHT)
+	{
+		curtain->Render(Vector2D(0, curtainPosition), SDL_FLIP_NONE);
+	}
 }
 
 void Titlescreen::Update(float deltaTime, SDL_Event e)
 {
-	backgroundAnimator->Update(deltaTime);
-
-	// Handle the events
-	switch (e.type)
+	if (curtainPosition > -SCREEN_HEIGHT)
 	{
-	case SDL_KEYDOWN:
-		switch (e.key.keysym.sym)
-		{
-		case SDLK_e:
-			std::string targetLevel = GetFileInput();
+		curtainPosition -= deltaTime / curtainDrawTime * SCREEN_HEIGHT;
+	}
 
-			if (targetLevel != "")
-				screenManager->ChangeScreen(SCREEN_LEVEL1, targetLevel);
-			break;
-		}
+	if (!buttonClicked)
+		playButton->Update(deltaTime, e);
+	if (!buttonClicked)
+		multiplayerButton->Update(deltaTime, e);
+	if (!buttonClicked)
+		editButton->Update(deltaTime, e);
+	if (!buttonClicked)
+		createButton->Update(deltaTime, e);
+
+	buttonClicked = false;
+}
+
+void Titlescreen::ButtonClicked(ButtonUI* button, bool leftClick)
+{
+	buttonClicked = true;
+
+	if (button == playButton)
+	{
+		screenManager->multiplayer = false;
+		std::string targetLevel = GetFileInput();
+
+		if (targetLevel != "")
+			screenManager->ChangeScreen(SCREEN_LEVEL, targetLevel);
+	}
+	else if (button == multiplayerButton)
+	{
+		screenManager->multiplayer = true;
+		std::string targetLevel = GetFileInput();
+
+		if (targetLevel != "")
+			screenManager->ChangeScreen(SCREEN_LEVEL, targetLevel);
+	}
+	else if (button == editButton)
+	{
+		std::string targetLevel = GetFileInput();
+
+		if (targetLevel != "")
+			screenManager->ChangeScreen(SCREEN_LEVEL_CREATOR, targetLevel);
+	}
+	else if (button == createButton)
+	{
+		screenManager->ChangeScreen(SCREEN_LEVEL_CREATOR);
 	}
 }
 

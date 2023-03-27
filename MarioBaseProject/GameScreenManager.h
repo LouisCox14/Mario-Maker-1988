@@ -17,6 +17,7 @@ class GameScreenManager
 		void ChangeScreen(SCREENS new_screen, std::string fileDirectory = "");
 
 		bool newScreen;
+		bool multiplayer;
 
 	private:
 		SDL_Renderer* m_renderer;

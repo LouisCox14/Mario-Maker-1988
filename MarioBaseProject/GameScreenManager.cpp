@@ -56,8 +56,8 @@ void GameScreenManager::ChangeScreen(SCREENS new_screen, std::string fileDirecto
 			m_current_screen = tempScreen;
 			tempScreen = nullptr;
 			break;
-		case SCREEN_LEVEL1:
-			tempScreen = (GameScreen*)new LevelScreen(m_renderer, fileDirectory, false);
+		case SCREEN_LEVEL:
+			tempScreen = (GameScreen*)new LevelScreen(m_renderer, fileDirectory, multiplayer);
 			m_current_screen = tempScreen;
 			tempScreen = nullptr;
 			break;

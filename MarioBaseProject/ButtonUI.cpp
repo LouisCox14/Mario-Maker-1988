@@ -21,6 +21,8 @@ ButtonUI::ButtonUI(SDL_Renderer* renderer, GameScreen* attatchedScreen, Vector2D
 ButtonUI::~ButtonUI()
 {
 	m_renderer = nullptr;
+	m_attatchedScreen = nullptr;
+
 	delete m_texture;
 	m_texture = nullptr;
 }

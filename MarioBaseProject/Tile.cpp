@@ -53,8 +53,9 @@ Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, tileData _tileInfo, s
 	if (collSides != std::array<COLLISION_SIDES, 4> {NONE, NONE, NONE, NONE})
 	{
 		hasCollider = true;
-		coll.collisionSides = collSides;
 	}
+
+	coll.collisionSides = collSides;
 
 	if (tileInfo.isAnimated)
 	{

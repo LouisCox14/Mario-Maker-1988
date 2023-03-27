@@ -8,6 +8,8 @@
 
 LevelCreator::LevelCreator(SDL_Renderer* renderer, std::string importPath) : GameScreen(renderer)
 {
+	exportPath = importPath;
+
 	camSpeed = 100.0f;
 	camScale = 2.0f;
 	scaleSpeed = 0.15f;
@@ -361,7 +363,12 @@ int LevelCreator::GetTileIndexAtGridPos(Vector2D gridPosition)
 
 void LevelCreator::ExportFile()
 {
-	std::ofstream fout("Levels/Test.json", std::ios::out);
+	if (exportPath == "")
+	{
+		exportPath = "../../MM98 Level.json";
+	}
+
+	std::ofstream fout(exportPath, std::ios::out);
 
 	Json::Value levelObject;
 
@@ -375,10 +382,12 @@ void LevelCreator::ExportFile()
 		currentTile["ImageDirectory"] = tile->tilePath;
 
 		Json::Value collisionDirections(Json::arrayValue);
+
 		for (COLLISION_SIDES collSide : tile->coll.collisionSides)
 		{
-			collisionDirections.append(collSide);
+			collisionDirections.append((int)collSide);
 		}
+
 		currentTile["CollisionDirections"] = collisionDirections;
 
 		currentTile["TileDataReference"] = tile->tileInfo.fileName;

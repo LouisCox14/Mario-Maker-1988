@@ -49,6 +49,8 @@ class LevelCreator : GameScreen
 
 		std::vector<Tile*> tileMap;
 
+		std::string exportPath;
+
 	private:
 		void LoadTileOptions(std::vector<tileData> tileVector);
 		void ReloadNeighbouringComposites(Vector2D gridPosition, tileData tileInfo);
