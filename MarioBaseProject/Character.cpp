@@ -5,10 +5,13 @@
 #include "GameScreenManager.h"
 #include "GameScreen.h"
 #include <vector>
+#include <SDL.h>
 
-Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition) : cameraPosition(_cameraPosition)
+Character::Character(SDL_Renderer* renderer, LevelScreen* _levelScreen, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition) : cameraPosition(_cameraPosition)
 {
 	m_renderer = renderer;
+	levelScreen = _levelScreen;
+
 	m_position = startPosition;
 	m_facing_direction = FACING_RIGHT;
 
@@ -19,11 +22,23 @@ Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D sta
 	{
 		std::cout << "Failed to load character texture! " << imagePath << " not found." << std::endl;
 	}
+
+	const Uint8* keystate = SDL_GetKeyboardState(NULL);
+
+	if (keystate[SDL_SCANCODE_A])
+	{
+		xInput -= 1;
+	}
+	if (keystate[SDL_SCANCODE_D])
+	{
+		xInput += 1;
+	}
 }
 
 Character::~Character()
 {
 	m_renderer = nullptr;
+	levelScreen = nullptr;
 }
 
 void Character::Render(Vector2D cameraPosition)
@@ -42,36 +57,33 @@ void Character::Animate() {}
 
 void Character::Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& tileMap)
 {
+	xInput = 0;
+	const Uint8* keystate = SDL_GetKeyboardState(NULL);
+
+	if (keystate[controls.leftMove])
+	{
+		xInput -= 1;
+	}
+	if (keystate[controls.rightMove])
+	{
+		xInput += 1;
+	}
+
 	if (e.key.repeat == 0)
 	{
 		switch (e.type)
 		{
 			case SDL_KEYDOWN:
 
-				if (e.key.keysym.sym == controls.leftMove)
-				{
-					xInput -= 1;
-				}
-				else if (e.key.keysym.sym == controls.rightMove)
-				{
-					xInput += 1;
-				}
-				else if (e.key.keysym.sym == controls.jump)
+				if (e.key.keysym.sym == controls.jump)
 				{
 					jumpKeyDown = true;
 					timeSinceJumpInput = 0;
 				}
 				break;
 			case SDL_KEYUP:
-				if (e.key.keysym.sym == controls.leftMove)
-				{
-					xInput += 1;
-				}
-				else if (e.key.keysym.sym == controls.rightMove)
-				{
-					xInput -= 1;
-				}
-				else if (e.key.keysym.sym == controls.jump)
+
+				if (e.key.keysym.sym == controls.jump)
 				{
 					jumpKeyDown = false;
 					EndJump();
@@ -99,6 +111,8 @@ void Character::Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& t
 	Animate();
 	animator->Update(deltaTime);
 }
+
+void Character::TakeDamage() {}
 
 void Character::SetPosition(Vector2D new_position)
 {

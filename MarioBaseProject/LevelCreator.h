@@ -21,7 +21,7 @@ enum UI_TABS
 class LevelCreator : GameScreen
 {
 	public:
-		LevelCreator(SDL_Renderer* renderer, std::string importPath = "");
+		LevelCreator(SDL_Renderer* renderer, GameScreenManager* _screenManager, std::string importPath = "");
 		~LevelCreator();
 
 		void Render() override;
@@ -38,7 +38,7 @@ class LevelCreator : GameScreen
 		bool leftMouseDown;
 		bool rightMouseDown;
 
-		std::map<UI_TABS, ButtonUI*> UI;
+		std::map<UI_TABS, ButtonUI*> sidebarUI;
 		std::vector<UI_TABS> renderOrderUI;
 		UI_TABS activeTab = SIDEBAR;
 		bool buttonClicked;
@@ -49,6 +49,7 @@ class LevelCreator : GameScreen
 
 		std::vector<Tile*> tileMap;
 
+		ButtonUI* exportButton;
 		std::string exportPath;
 
 	private:

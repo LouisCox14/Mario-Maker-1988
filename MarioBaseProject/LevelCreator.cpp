@@ -5,21 +5,26 @@
 #include <fstream>
 #include <iostream>
 #include <json\json.h>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
 
-LevelCreator::LevelCreator(SDL_Renderer* renderer, std::string importPath) : GameScreen(renderer)
+LevelCreator::LevelCreator(SDL_Renderer* renderer, GameScreenManager* _screenManager, std::string importPath) : GameScreen(renderer, _screenManager)
 {
 	exportPath = importPath;
 
-	camSpeed = 100.0f;
+	camSpeed = 75.0f * CAMERA_SCALE;
 	camScale = 2.0f;
 	scaleSpeed = 0.15f;
 
-	UI.insert({ TERRAIN, new ButtonUI(renderer, this, Vector2D(0, 16), std::string("UI/Terrain Tab.png")) });
-	UI.insert({ SPECIAL, new ButtonUI(renderer, this, Vector2D(0, 64), std::string("UI/Special Tab.png")) });
-	UI.insert({ ENEMIES, new ButtonUI(renderer, this, Vector2D(0, 112), std::string("UI/Enemies Tab.png")) });
-	UI.insert({ GAME_LOGIC, new ButtonUI(renderer, this, Vector2D(0, 160), std::string("UI/Game Logic Tab.png")) });
-	UI.insert({ DECORATIONS, new ButtonUI(renderer, this, Vector2D(0, 208), std::string("UI/Decorations Tab.png")) });
-	UI.insert({ SIDEBAR, new ButtonUI(renderer, this, Vector2D(0, 0), std::string("UI/Sidebar.png")) });
+	exportButton = new ButtonUI(renderer, this, Vector2D(0, 0), std::string("UI/Level Creator/Export Button.png"));
+
+	sidebarUI.insert({ TERRAIN, new ButtonUI(renderer, this, Vector2D(0, 16), std::string("UI/Level Creator/Terrain Tab.png")) });
+	sidebarUI.insert({ SPECIAL, new ButtonUI(renderer, this, Vector2D(0, 64), std::string("UI/Level Creator/Special Tab.png")) });
+	sidebarUI.insert({ ENEMIES, new ButtonUI(renderer, this, Vector2D(0, 112), std::string("UI/Level Creator/Enemies Tab.png")) });
+	sidebarUI.insert({ GAME_LOGIC, new ButtonUI(renderer, this, Vector2D(0, 160), std::string("UI/Level Creator/Game Logic Tab.png")) });
+	sidebarUI.insert({ DECORATIONS, new ButtonUI(renderer, this, Vector2D(0, 208), std::string("UI/Level Creator/Decorations Tab.png")) });
+	sidebarUI.insert({ SIDEBAR, new ButtonUI(renderer, this, Vector2D(0, 0), std::string("UI/Level Creator/Sidebar.png")) });
 
 	renderOrderUI = { TERRAIN, SPECIAL, ENEMIES, GAME_LOGIC, DECORATIONS, SIDEBAR };
 
@@ -58,13 +63,15 @@ void LevelCreator::Render()
 
 	for (UI_TABS tab : renderOrderUI)
 	{
-		UI.at(tab)->Render();
+		sidebarUI.at(tab)->Render();
 	}
 
 	for (ButtonUI* tileOption : optionsDisplayed)
 	{
 		tileOption->Render();
 	}
+
+	exportButton->Render();
 }
 
 void LevelCreator::Update(float deltaTime, SDL_Event e)
@@ -74,24 +81,24 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 	if (activeTab == SIDEBAR)
 	{
 		optionsDisplayed.clear();
-		UI.at(SIDEBAR)->position.x = SCREEN_WIDTH;
+		sidebarUI.at(SIDEBAR)->position.x = SCREEN_WIDTH;
 	}
 	else
 	{
-		UI.at(SIDEBAR)->position.x = SCREEN_WIDTH - 80;
+		sidebarUI.at(SIDEBAR)->position.x = SCREEN_WIDTH - 80;
 	}
 
-	float sideBarPosition = UI.at(SIDEBAR)->position.x;
+	float sideBarPosition = sidebarUI.at(SIDEBAR)->position.x;
 
 	for (UI_TABS button : renderOrderUI)
 	{
-		UI.at(button)->position.x = sideBarPosition - 13;
+		sidebarUI.at(button)->position.x = sideBarPosition - 13;
 	}
 
-	UI.at(activeTab)->position.x -= 20;
-	UI.at(SIDEBAR)->position.x = sideBarPosition;
+	sidebarUI.at(activeTab)->position.x -= 20;
+	sidebarUI.at(SIDEBAR)->position.x = sideBarPosition;
 
-	for (std::pair<UI_TABS, ButtonUI*> button : UI)
+	for (std::pair<UI_TABS, ButtonUI*> button : sidebarUI)
 	{
 		button.second->Update(deltaTime, e);
 	}
@@ -102,8 +109,32 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 	}
 
 
+	exportButton->Update(deltaTime, e);
+
+
 	SDL_GetMouseState(&mouseX, &mouseY);
 	Vector2D mouseGridPos = PixelToGridPos(Vector2D((float)mouseX, (float)mouseY));
+
+	const Uint8* keystate = SDL_GetKeyboardState(NULL);
+
+	camMovement = Vector2D(0, 0);
+
+	if (keystate[SDL_SCANCODE_A])
+	{
+		camMovement.x -= 1;
+	}
+	if (keystate[SDL_SCANCODE_D])
+	{
+		camMovement.x += 1;
+	}
+	if (keystate[SDL_SCANCODE_W])
+	{
+		camMovement.y -= 1;
+	}
+	if (keystate[SDL_SCANCODE_S])
+	{
+		camMovement.y += 1;
+	}
 
 	if (e.key.repeat == 0)
 	{
@@ -112,38 +143,8 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 			case SDL_KEYDOWN:
 				switch (e.key.keysym.sym)
 				{
-					case SDLK_a:
-						camMovement.x -= 1;
-						break;
-					case SDLK_d:
-						camMovement.x += 1;
-						break;
-					case SDLK_w:
-						camMovement.y -= 1;
-						break;
-					case SDLK_s:
-						camMovement.y += 1;
-						break;
 					case SDLK_e:
 						ExportFile();
-						break;
-				}
-
-				break;
-			case SDL_KEYUP:
-				switch (e.key.keysym.sym)
-				{
-					case SDLK_a:
-						camMovement.x += 1;
-						break;
-					case SDLK_d:
-						camMovement.x -= 1;
-						break;
-					case SDLK_w:
-						camMovement.y += 1;
-						break;
-					case SDLK_s:
-						camMovement.y -= 1;
 						break;
 				}
 
@@ -153,18 +154,18 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 				if (!buttonClicked)
 				{
 					activeTab = SIDEBAR;
-				}
 
-				switch (e.button.button)
-				{
-					case SDL_BUTTON_LEFT:
-						leftMouseDown = true;
-						break;
-					case SDL_BUTTON_RIGHT:
-						rightMouseDown = true;
-						break;
+					switch (e.button.button)
+					{
+						case SDL_BUTTON_LEFT:
+							leftMouseDown = true;
+							break;
+						case SDL_BUTTON_RIGHT:
+							rightMouseDown = true;
+							break;
+					}
+					break;
 				}
-				break;
 			case SDL_MOUSEBUTTONUP:
 				switch (e.button.button)
 				{
@@ -213,7 +214,7 @@ void LevelCreator::ButtonClicked(ButtonUI* clickedButton, bool leftClick)
 	buttonClicked = true;
 	if (leftClick)
 	{
-		for (std::pair<UI_TABS, ButtonUI*> button : UI)
+		for (std::pair<UI_TABS, ButtonUI*> button : sidebarUI)
 		{
 			if (button.second == clickedButton && button.first != SIDEBAR)
 			{
@@ -240,7 +241,11 @@ void LevelCreator::ButtonClicked(ButtonUI* clickedButton, bool leftClick)
 			}
 		}
 
-		if (GetButtonIndex(optionsDisplayed, clickedButton) != -1)
+		if (clickedButton == exportButton)
+		{
+			ExportFile();
+		}
+		else if (GetButtonIndex(optionsDisplayed, clickedButton) != -1)
 		{
 			selectedTile = tileOptions[GetButtonIndex(optionsDisplayed, clickedButton)];
 		}
@@ -365,7 +370,16 @@ void LevelCreator::ExportFile()
 {
 	if (exportPath == "")
 	{
-		exportPath = "../../MM98 Level.json";
+		const time_t t = std::time(nullptr);
+		std::tm tm = {};
+
+		localtime_s(&tm, &t);
+
+		std::ostringstream oss;
+		oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
+		auto str = oss.str();
+
+		exportPath = "../../MM88 Level (" + str + ").json";
 	}
 
 	std::ofstream fout(exportPath, std::ios::out);
@@ -402,6 +416,8 @@ void LevelCreator::ExportFile()
 	fout << styledWriter.write(levelObject);
 
 	fout.close();
+
+	GameScreen::screenManager->ChangeScreen(SCREEN_LEVEL, exportPath);
 }
 
 void LevelCreator::ImportFile(std::string importPath)

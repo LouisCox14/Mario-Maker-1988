@@ -3,6 +3,7 @@
 #include "Controls.h"
 #include "PhysicsObject.h"
 #include "Animator.h"
+#include "LevelScreen.h"
 #include <iostream>
 #include <SDL.h>
 #include <vector>
@@ -13,18 +14,21 @@ class PhysicsObject;
 class Character
 {
 	public:
-		Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition);
+		Character(SDL_Renderer* renderer, LevelScreen* _levelScreen, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition);
 		~Character();
 
 		virtual void Render(Vector2D cameraPosition);
 		virtual void Animate();
 		virtual void Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& tileMap);
+		virtual void TakeDamage();
+
 		void SetPosition(Vector2D new_position);
 		Vector2D GetPosition();
 		Vector2D GetSize();
 		void LockToScreen();
 
 		Vector2D& cameraPosition;
+		LevelScreen* levelScreen;
 
 		FACING m_facing_direction;
 		bool grounded;

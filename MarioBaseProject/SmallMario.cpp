@@ -1,10 +1,10 @@
 #include "SmallMario.h"
 
-SmallMario::SmallMario(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition) : Character(renderer, imagePath, startPosition, scale, _cameraPosition)
+SmallMario::SmallMario(SDL_Renderer* renderer, LevelScreen* _levelScreen, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition) : Character(renderer, _levelScreen, imagePath, startPosition, scale, _cameraPosition)
 {
 	grounded = false;
 
-	controls = CharacterControls(SDLK_d, SDLK_a, SDLK_w);
+	controls = CharacterControls(SDL_SCANCODE_D, SDL_SCANCODE_A, SDLK_w);
 
 	xInput = 0;
 	groundMoveSpeed = 275;
@@ -54,4 +54,9 @@ void SmallMario::Animate()
 	{
 		animator->SetAnimation("Jump");
 	}
+}
+
+void SmallMario::TakeDamage()
+{
+	levelScreen->gameOver = true;
 }

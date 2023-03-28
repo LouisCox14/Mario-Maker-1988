@@ -2,10 +2,8 @@
 #include <windows.h>
 #include <Commdlg.h>
 
-Titlescreen::Titlescreen(SDL_Renderer* renderer, GameScreenManager* _screenManager) : GameScreen(renderer)
+Titlescreen::Titlescreen(SDL_Renderer* renderer, GameScreenManager* _screenManager) : GameScreen(renderer, _screenManager)
 {
-	screenManager = _screenManager;
-
 	background = new Texture2D(m_renderer, 2.0f);
 	background->LoadFromFile("UI/Titlescreen/Titlescreen.png");
 
@@ -96,30 +94,30 @@ void Titlescreen::ButtonClicked(ButtonUI* button, bool leftClick)
 
 	if (button == playButton)
 	{
-		screenManager->multiplayer = false;
+		GameScreen::screenManager->multiplayer = false;
 		std::string targetLevel = GetFileInput();
 
 		if (targetLevel != "")
-			screenManager->ChangeScreen(SCREEN_LEVEL, targetLevel);
+			GameScreen::screenManager->ChangeScreen(SCREEN_LEVEL, targetLevel);
 	}
 	else if (button == multiplayerButton)
 	{
-		screenManager->multiplayer = true;
+		GameScreen::screenManager->multiplayer = true;
 		std::string targetLevel = GetFileInput();
 
 		if (targetLevel != "")
-			screenManager->ChangeScreen(SCREEN_LEVEL, targetLevel);
+			GameScreen::screenManager->ChangeScreen(SCREEN_LEVEL, targetLevel);
 	}
 	else if (button == editButton)
 	{
 		std::string targetLevel = GetFileInput();
 
 		if (targetLevel != "")
-			screenManager->ChangeScreen(SCREEN_LEVEL_CREATOR, targetLevel);
+			GameScreen::screenManager->ChangeScreen(SCREEN_LEVEL_CREATOR, targetLevel);
 	}
 	else if (button == createButton)
 	{
-		screenManager->ChangeScreen(SCREEN_LEVEL_CREATOR);
+		GameScreen::screenManager->ChangeScreen(SCREEN_LEVEL_CREATOR);
 	}
 }
 

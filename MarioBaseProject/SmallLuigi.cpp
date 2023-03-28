@@ -1,11 +1,11 @@
 #include "SmallLuigi.h"
 #include "Commons.h"
 
-SmallLuigi::SmallLuigi(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition) : Character(renderer, imagePath, startPosition, scale, _cameraPosition)
+SmallLuigi::SmallLuigi(SDL_Renderer* renderer, LevelScreen* _levelScreen, std::string imagePath, Vector2D startPosition, float scale, Vector2D& _cameraPosition) : Character(renderer, _levelScreen, imagePath, startPosition, scale, _cameraPosition)
 {
 	grounded = false;
 
-	controls = CharacterControls(SDLK_RIGHT, SDLK_LEFT, SDLK_UP);
+	controls = CharacterControls(SDL_SCANCODE_RIGHT, SDL_SCANCODE_LEFT, SDLK_UP);
 
 	xInput = 0;
 	groundMoveSpeed = 275;
@@ -55,4 +55,9 @@ void SmallLuigi::Animate()
 	{
 		animator->SetAnimation("Jump");
 	}
+}
+
+void SmallLuigi::TakeDamage()
+{
+	levelScreen->gameOver = true;
 }

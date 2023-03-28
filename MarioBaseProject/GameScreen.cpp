@@ -8,9 +8,11 @@
 #include <fstream>
 #include <string>
 
-GameScreen::GameScreen(SDL_Renderer* renderer)
+GameScreen::GameScreen(SDL_Renderer* renderer, GameScreenManager* _screenManager)
 {
 	m_renderer = renderer;
+	screenManager = _screenManager;
+
 	cameraPosition = Vector2D(0, 0);
 }
 

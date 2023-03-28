@@ -8,9 +8,10 @@
 #include <json\json.h>
 #include <json\value.h>
 
-LevelScreen::LevelScreen(SDL_Renderer* renderer, std::string levelPath, bool multiplayer) : GameScreen(renderer)
+LevelScreen::LevelScreen(SDL_Renderer* renderer, GameScreenManager* _screenManager, std::string _levelPath, bool multiplayer) : GameScreen(renderer, _screenManager)
 {
-	LoadFromJSON(levelPath);
+	levelPath = _levelPath;
+	LoadFromJSON();
 	SetUpLevel(multiplayer);
 }
 
@@ -41,10 +42,24 @@ void LevelScreen::Render()
 
 void LevelScreen::Update(float deltaTime, SDL_Event e)
 {
-	for (Character * character : characters)
+	float cameraX = 0;
+
+	for (Character* character : characters)
 	{
 		character->Update(deltaTime, e, GetOnScreenTiles());
+		cameraX += (character->GetPosition().x + (character->GetSize().x / 2)) / characters.size();
+
+		if (character->GetPosition().y > levelHeight)
+		{
+			gameOver = true;
+		}
 	}
+
+	cameraX -= SCREEN_WIDTH / 2;
+
+	cameraX = std::max(cameraX, 0.0f);
+	cameraX = std::min(cameraX, (float)levelWidth - SCREEN_WIDTH);
+	GameScreen::cameraPosition.x = cameraX;
 
 	for (Tile* tile : GetOnScreenTiles())
 	{
@@ -54,21 +69,28 @@ void LevelScreen::Update(float deltaTime, SDL_Event e)
 		}
 	}
 
-	float cameraX = 0;
-
-	for (Character* character : characters)
-	{
-		cameraX += (character->GetPosition().x + (character->GetSize().x / 2)) / characters.size();
-	}
-
-	cameraX -= SCREEN_WIDTH / 2;
-
-	cameraX = std::max(cameraX, 0.0f);
-	cameraX = std::min(cameraX, (float)GameScreen::levelWidth - SCREEN_WIDTH);
-	GameScreen::cameraPosition.x = cameraX;
+	if (gameOver)
+		GameOver();
 }
 
-void LevelScreen::LoadFromJSON(std::string levelPath)
+void LevelScreen::GameOver()
+{
+	SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
+
+	int alpha = 0;
+	while (alpha < 255)
+	{
+		SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, alpha);
+		SDL_RenderFillRect(m_renderer, NULL);
+		SDL_Delay(20);
+		SDL_RenderPresent(m_renderer);
+		alpha += 5;
+	}
+
+	GameScreen::screenManager->ChangeScreen(SCREEN_LEVEL, levelPath);
+}
+
+void LevelScreen::LoadFromJSON()
 {
 	std::ifstream fin(levelPath, std::ios::in | std::ios::binary);
 
@@ -102,24 +124,30 @@ void LevelScreen::LoadFromJSON(std::string levelPath)
 
 bool LevelScreen::SetUpLevel(bool multiplayer)
 {
-	int furthestPoint = 0;
+	int highestX = 0;
+	int highestY = 0;
 
 	for (Tile* tile : tileMap)
 	{
-		if (tile->position.x + TILE_RESOLUTION * CAMERA_SCALE > furthestPoint)
+		if (tile->position.x + TILE_RESOLUTION * CAMERA_SCALE > highestX)
 		{
-			furthestPoint = tile->position.x + TILE_RESOLUTION * CAMERA_SCALE;
+			highestX = tile->position.x + TILE_RESOLUTION * CAMERA_SCALE;
+		}
+		if (tile->position.y + TILE_RESOLUTION * CAMERA_SCALE > highestY)
+		{
+			highestY = tile->position.y + TILE_RESOLUTION * CAMERA_SCALE;
 		}
 	}
 
-	GameScreen::levelWidth = furthestPoint;
+	levelWidth = highestX;
+	levelHeight = highestY;
 
 	// Set up player character
-	characters.push_back((Character*)new SmallMario(m_renderer, "Sprites/Small Mario/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
+	characters.push_back((Character*)new SmallMario(m_renderer, this, "Sprites/Small Mario/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
 
 	if (multiplayer)
 	{
-		characters.push_back((Character*)new SmallLuigi(m_renderer, "Sprites/Small Luigi/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
+		characters.push_back((Character*)new SmallLuigi(m_renderer, this, "Sprites/Small Luigi/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
 	}
 
 	return true;

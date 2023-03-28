@@ -1,5 +1,4 @@
 #pragma once
-#include "GameScreen.h"
 #include "Commons.h"
 #include <SDL.h>
 
