@@ -19,6 +19,7 @@ GameScreen::GameScreen(SDL_Renderer* renderer, GameScreenManager* _screenManager
 GameScreen::~GameScreen()
 {
 	m_renderer = nullptr;
+	audioPlayer = nullptr;
 }
 
 void GameScreen::Render() {}

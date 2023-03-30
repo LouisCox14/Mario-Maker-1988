@@ -13,6 +13,10 @@ LevelScreen::LevelScreen(SDL_Renderer* renderer, GameScreenManager* _screenManag
 	levelPath = _levelPath;
 	LoadFromJSON();
 	SetUpLevel(multiplayer);
+
+	audioPlayer = new AudioPlayer({ "NewLevel", "Death"}, {"LevelMusic1", "LevelMusic2"});
+	audioPlayer->PlayMusic("LevelMusic1");
+	audioPlayer->PlayClip("NewLevel");
 }
 
 LevelScreen::~LevelScreen()
@@ -42,24 +46,30 @@ void LevelScreen::Render()
 
 void LevelScreen::Update(float deltaTime, SDL_Event e)
 {
-	float cameraX = 0;
+	Vector2D newCameraPosition = Vector2D(0, 0);
 
 	for (Character* character : characters)
 	{
 		character->Update(deltaTime, e, GetOnScreenTiles());
-		cameraX += (character->GetPosition().x + (character->GetSize().x / 2)) / characters.size();
 
 		if (character->GetPosition().y > levelHeight)
 		{
 			gameOver = true;
 		}
+
+		newCameraPosition.x += (character->GetPosition().x + (character->GetSize().x / 2)) / characters.size();
+		newCameraPosition.y += (character->GetPosition().y + (character->GetSize().y / 2)) / characters.size();
 	}
 
-	cameraX -= SCREEN_WIDTH / 2;
+	newCameraPosition -= Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT) / 2;
 
-	cameraX = std::max(cameraX, 0.0f);
-	cameraX = std::min(cameraX, (float)levelWidth - SCREEN_WIDTH);
-	GameScreen::cameraPosition.x = cameraX;
+	newCameraPosition.x = std::max(newCameraPosition.x, 0.0f);
+	newCameraPosition.x = std::min(newCameraPosition.x, (float)levelWidth - SCREEN_WIDTH);
+
+	newCameraPosition.y = std::max(newCameraPosition.y, 0.0f);
+	newCameraPosition.y = std::min(newCameraPosition.y, (float)levelHeight - SCREEN_HEIGHT);
+
+	cameraPosition = newCameraPosition;
 
 	for (Tile* tile : GetOnScreenTiles())
 	{
@@ -75,6 +85,8 @@ void LevelScreen::Update(float deltaTime, SDL_Event e)
 
 void LevelScreen::GameOver()
 {
+	audioPlayer->StopMusic();
+	audioPlayer->PlayClip("Death");
 	SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
 
 	int alpha = 0;
@@ -82,7 +94,7 @@ void LevelScreen::GameOver()
 	{
 		SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, alpha);
 		SDL_RenderFillRect(m_renderer, NULL);
-		SDL_Delay(20);
+		SDL_Delay(85);
 		SDL_RenderPresent(m_renderer);
 		alpha += 5;
 	}

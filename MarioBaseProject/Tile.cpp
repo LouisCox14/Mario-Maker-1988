@@ -204,7 +204,7 @@ bool Tile::SetUpTile(std::vector<Tile*> tileMap, float scale)
 		imagePath += " 1";
 	}
 
-	if (tileInfo.colliderType == COMPOSITE)
+	if (tileInfo.spriteType == COMPOSITE)
 	{
 		imagePath += tileInfo.defaultSuffix;
 	}

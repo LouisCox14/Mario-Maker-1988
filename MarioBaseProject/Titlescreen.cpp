@@ -23,6 +23,9 @@ Titlescreen::Titlescreen(SDL_Renderer* renderer, GameScreenManager* _screenManag
 	multiplayerButton = new ButtonUI(renderer, this, Vector2D(150, 285), std::string("UI/Titlescreen/Multiplayer Button.png"), 2.0f);
 	editButton = new ButtonUI(renderer, this, Vector2D(150, 310), std::string("UI/Titlescreen/Edit Button.png"), 2.0f);
 	createButton = new ButtonUI(renderer, this, Vector2D(150, 335), std::string("UI/Titlescreen/Create Button.png"), 2.0f);
+
+	audioPlayer = new AudioPlayer({"ButtonClicked"}, {"MenuMusic"});
+	audioPlayer->PlayMusic("MenuMusic");
 }
 
 Titlescreen::~Titlescreen()
@@ -90,6 +93,7 @@ void Titlescreen::Update(float deltaTime, SDL_Event e)
 
 void Titlescreen::ButtonClicked(ButtonUI* button, bool leftClick)
 {
+	audioPlayer->PlayClip("ButtonClicked");
 	buttonClicked = true;
 
 	if (button == playButton)

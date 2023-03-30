@@ -3,6 +3,7 @@
 #include "TileData.h"
 #include "ButtonUI.h"
 #include "GameScreenManager.h"
+#include "AudioPlayer.h"
 #include <SDL.h>
 #include <string>
 #include <vector>
@@ -23,4 +24,5 @@ class GameScreen
 	protected:
 		SDL_Renderer* m_renderer;
 		GameScreenManager* screenManager;
+		AudioPlayer* audioPlayer;
 };

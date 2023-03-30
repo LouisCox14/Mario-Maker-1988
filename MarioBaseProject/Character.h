@@ -66,4 +66,5 @@ class Character
 		Texture2D* m_texture;
 		PhysicsObject m_physics;
 		Animator* animator;
+		AudioPlayer* audioPlayer;
 };

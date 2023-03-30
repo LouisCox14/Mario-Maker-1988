@@ -33,6 +33,8 @@ Character::Character(SDL_Renderer* renderer, LevelScreen* _levelScreen, std::str
 	{
 		xInput += 1;
 	}
+
+	audioPlayer = new AudioPlayer({ "Jump" }, {});
 }
 
 Character::~Character()
@@ -188,6 +190,8 @@ void Character::Jump(float deltaTime)
 
 	if (timeSinceJumpInput < jumpInputFudge && timeSinceGrounded < coyoteTime && !isJumping)
 	{
+		audioPlayer->PlayClip("Jump");
+
 		if (jumpKeyDown)
 		{
 			m_physics.velocity.y -= jumpForce;

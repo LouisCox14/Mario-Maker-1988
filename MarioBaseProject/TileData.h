@@ -78,7 +78,10 @@ struct tileData
 
 const std::vector<tileData> terrainTiles = {
 	tileData("Ground", COMPOSITE, COMPOSITE, {TOP, NONE, RIGHT, LEFT}, {TOP, NONE, RIGHT, LEFT}, " Top"),
-	tileData("Green Block", COMPOSITE, COMPOSITE, {TOP, BOTTOM, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right")
+	tileData("Green Block", COMPOSITE, COMPOSITE, {TOP, BOTTOM, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right"),
+	tileData("White Block", COMPOSITE, COMPOSITE, {TOP, BOTTOM, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right"),
+	tileData("Blue Block", COMPOSITE, COMPOSITE, {TOP, BOTTOM, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right"),
+	tileData("Pink Block", COMPOSITE, COMPOSITE, {TOP, BOTTOM, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right")
 };
 
 const std::vector<tileData> specialTiles = {
@@ -88,14 +91,23 @@ const std::vector<tileData> specialTiles = {
 };
 
 const std::vector<tileData> decorationTiles = {
-	tileData("Shrubbery", COMPOSITE, SINGLE, {NONE, NONE, RIGHT, LEFT}, {NONE, NONE, NONE, NONE})
+	tileData("Shrubbery", COMPOSITE, SINGLE, {NONE, NONE, RIGHT, LEFT}, {NONE, NONE, NONE, NONE}),
+	tileData("Bush", SINGLE, SINGLE, {NONE, NONE, NONE, NONE}, {NONE, NONE, NONE, NONE}),
+	tileData("Background Hill", COMPOSITE, SINGLE, {TOP, NONE, RIGHT, LEFT}, {NONE, NONE, NONE, NONE}, " Top Right"),
+	tileData("Cloud", COMPOSITE, SINGLE, {TOP, BOTTOM, RIGHT, LEFT}, {NONE, NONE, NONE, NONE}, " Top")
 };
 
 const std::map<std::string, tileData> allTiles = {
 	{"Ground", terrainTiles[0]},
 	{"Green Block", terrainTiles[1]},
+	{"White Block", terrainTiles[1]},
+	{"Blue Block", terrainTiles[1]},
+	{"Pink Block", terrainTiles[1]},
 	{"Shiny Block", specialTiles[0]},
 	{"Question Block", specialTiles[1]},
 	{"Pipe", specialTiles[2]},
-	{"Shrubbery", decorationTiles[0]}
+	{"Shrubbery", decorationTiles[0]},
+	{"Bush", decorationTiles[1]},
+	{"Background Hill", decorationTiles[2]},
+	{"Cloud", decorationTiles[3]}
 };

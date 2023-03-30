@@ -167,6 +167,7 @@ xcopy "$(ProjectDir)SDL2\DLL\*.*" "$(OutDir)" /Y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="AudioPlayer.cpp" />
     <ClCompile Include="ButtonUI.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="GameScreen.cpp" />
@@ -184,6 +185,7 @@ xcopy "$(ProjectDir)SDL2\DLL\*.*" "$(OutDir)" /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animator.h" />
+    <ClInclude Include="AudioPlayer.h" />
     <ClInclude Include="ButtonUI.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Commons.h" />

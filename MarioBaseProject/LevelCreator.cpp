@@ -34,6 +34,10 @@ LevelCreator::LevelCreator(SDL_Renderer* renderer, GameScreenManager* _screenMan
 	{
 		ImportFile(importPath);
 	}
+
+	audioPlayer = new AudioPlayer({ "NewLevel", "ButtonClicked"}, {"LevelCreatorMusic"});
+	audioPlayer->PlayMusic("LevelCreatorMusic");
+	audioPlayer->PlayClip("NewLevel");
 }
 
 LevelCreator::~LevelCreator()
@@ -211,6 +215,7 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 
 void LevelCreator::ButtonClicked(ButtonUI* clickedButton, bool leftClick)
 {
+	audioPlayer->PlayClip("ButtonClicked");
 	buttonClicked = true;
 	if (leftClick)
 	{
