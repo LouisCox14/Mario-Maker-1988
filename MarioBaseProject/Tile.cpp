@@ -197,7 +197,7 @@ bool Tile::SetUpTile(std::vector<Tile*> tileMap, float scale)
 	// Load texture
 	m_tileTexture = new Texture2D(m_renderer, scale);
 
-	std::string imagePath = "Tiles/" + tileInfo.fileName;
+	std::string imagePath = "Assets/Tiles/" + tileInfo.fileName;
 
 	if (tileInfo.isAnimated)
 	{
@@ -230,17 +230,17 @@ void Tile::SetupAnimator()
 		tempAnim.framePaths.push_back(tileInfo.fileName + " " + std::to_string(i) + ".png");
 	}
 
-	m_animator = new Animator(*m_tileTexture, std::map<std::string, Animation>{ {"Idle", tempAnim}}, std::string("Idle"), std::string("Tiles/"));
+	m_animator = new Animator(*m_tileTexture, std::map<std::string, Animation>{ {"Idle", tempAnim}}, std::string("Idle"), std::string("Assets/Tiles/"));
 }
 
 bool Tile::LoadCompositeSprite(std::vector<Tile*> tileMap)
 {
-	std::string imagePath = "Tiles/" + CalculateCompositeSprite(tileMap) + ".png";
+	std::string imagePath = "Assets/Tiles/" + CalculateCompositeSprite(tileMap) + ".png";
 	tilePath = imagePath;
 
 	if (!m_tileTexture->LoadFromFile(imagePath))
 	{
-		imagePath = "Tiles/" + tileInfo.fileName + tileInfo.defaultSuffix + ".png";
+		imagePath = "Assets/Tiles/" + tileInfo.fileName + tileInfo.defaultSuffix + ".png";
 		tilePath = imagePath;
 
 		if (!m_tileTexture->LoadFromFile(imagePath))

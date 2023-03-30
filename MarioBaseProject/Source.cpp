@@ -57,7 +57,7 @@ bool InitSDL()
 	else
 	{
 		// Setup passed, so create a window
-		g_window = SDL_CreateWindow("Games Engine Creation",
+		g_window = SDL_CreateWindow("Mario Maker 1988",
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
 			SCREEN_WIDTH,

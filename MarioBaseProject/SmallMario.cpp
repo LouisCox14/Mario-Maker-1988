@@ -27,7 +27,7 @@ SmallMario::SmallMario(SDL_Renderer* renderer, LevelScreen* _levelScreen, std::s
 		{ "Run", Animation(std::vector<std::string>{"Idle.png", "Run.png"}, 0.1f, true) },
 		{ "Turn", Animation(std::vector<std::string>{"Turn.png"}, 0.25f, true) },
 		{ "Jump", Animation(std::vector<std::string>{"Jump.png"}, 0.25f, true) }
-	}, std::string("Running"), std::string("Sprites/Small Mario/"));
+	}, std::string("Idle"), std::string("Assets/Sprites/Small Mario/"));
 }
 
 void SmallMario::Animate()

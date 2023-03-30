@@ -100,9 +100,9 @@ const std::vector<tileData> decorationTiles = {
 const std::map<std::string, tileData> allTiles = {
 	{"Ground", terrainTiles[0]},
 	{"Green Block", terrainTiles[1]},
-	{"White Block", terrainTiles[1]},
-	{"Blue Block", terrainTiles[1]},
-	{"Pink Block", terrainTiles[1]},
+	{"White Block", terrainTiles[2]},
+	{"Blue Block", terrainTiles[3]},
+	{"Pink Block", terrainTiles[4]},
 	{"Shiny Block", specialTiles[0]},
 	{"Question Block", specialTiles[1]},
 	{"Pipe", specialTiles[2]},

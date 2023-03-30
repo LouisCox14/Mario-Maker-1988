@@ -15,7 +15,12 @@ LevelScreen::LevelScreen(SDL_Renderer* renderer, GameScreenManager* _screenManag
 	SetUpLevel(multiplayer);
 
 	audioPlayer = new AudioPlayer({ "NewLevel", "Death"}, {"LevelMusic1", "LevelMusic2"});
-	audioPlayer->PlayMusic("LevelMusic1");
+
+	if (multiplayer)
+		audioPlayer->PlayMusic("LevelMusic2");
+	else
+		audioPlayer->PlayMusic("LevelMusic1");
+
 	audioPlayer->PlayClip("NewLevel");
 }
 
@@ -52,7 +57,7 @@ void LevelScreen::Update(float deltaTime, SDL_Event e)
 	{
 		character->Update(deltaTime, e, GetOnScreenTiles());
 
-		if (character->GetPosition().y > levelHeight)
+		if (character->GetPosition().y > levelHeight + 5)
 		{
 			gameOver = true;
 		}
@@ -155,11 +160,11 @@ bool LevelScreen::SetUpLevel(bool multiplayer)
 	levelHeight = highestY;
 
 	// Set up player character
-	characters.push_back((Character*)new SmallMario(m_renderer, this, "Sprites/Small Mario/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
+	characters.push_back((Character*)new SmallMario(m_renderer, this, "Assets/Sprites/Small Mario/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
 
 	if (multiplayer)
 	{
-		characters.push_back((Character*)new SmallLuigi(m_renderer, this, "Sprites/Small Luigi/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
+		characters.push_back((Character*)new SmallLuigi(m_renderer, this, "Assets/Sprites/Small Luigi/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
 	}
 
 	return true;

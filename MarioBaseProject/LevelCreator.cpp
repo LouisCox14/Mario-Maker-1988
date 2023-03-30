@@ -17,14 +17,14 @@ LevelCreator::LevelCreator(SDL_Renderer* renderer, GameScreenManager* _screenMan
 	camScale = 2.0f;
 	scaleSpeed = 0.15f;
 
-	exportButton = new ButtonUI(renderer, this, Vector2D(0, 0), std::string("UI/Level Creator/Export Button.png"));
+	exportButton = new ButtonUI(renderer, this, Vector2D(0, 0), std::string("Assets/UI/Level Creator/Export Button.png"));
 
-	sidebarUI.insert({ TERRAIN, new ButtonUI(renderer, this, Vector2D(0, 16), std::string("UI/Level Creator/Terrain Tab.png")) });
-	sidebarUI.insert({ SPECIAL, new ButtonUI(renderer, this, Vector2D(0, 64), std::string("UI/Level Creator/Special Tab.png")) });
-	sidebarUI.insert({ ENEMIES, new ButtonUI(renderer, this, Vector2D(0, 112), std::string("UI/Level Creator/Enemies Tab.png")) });
-	sidebarUI.insert({ GAME_LOGIC, new ButtonUI(renderer, this, Vector2D(0, 160), std::string("UI/Level Creator/Game Logic Tab.png")) });
-	sidebarUI.insert({ DECORATIONS, new ButtonUI(renderer, this, Vector2D(0, 208), std::string("UI/Level Creator/Decorations Tab.png")) });
-	sidebarUI.insert({ SIDEBAR, new ButtonUI(renderer, this, Vector2D(0, 0), std::string("UI/Level Creator/Sidebar.png")) });
+	sidebarUI.insert({ TERRAIN, new ButtonUI(renderer, this, Vector2D(0, 16), std::string("Assets/UI/Level Creator/Terrain Tab.png")) });
+	sidebarUI.insert({ SPECIAL, new ButtonUI(renderer, this, Vector2D(0, 64), std::string("Assets/UI/Level Creator/Special Tab.png")) });
+	sidebarUI.insert({ ENEMIES, new ButtonUI(renderer, this, Vector2D(0, 112), std::string("Assets/UI/Level Creator/Enemies Tab.png")) });
+	sidebarUI.insert({ GAME_LOGIC, new ButtonUI(renderer, this, Vector2D(0, 160), std::string("Assets/UI/Level Creator/Game Logic Tab.png")) });
+	sidebarUI.insert({ DECORATIONS, new ButtonUI(renderer, this, Vector2D(0, 208), std::string("Assets/UI/Level Creator/Decorations Tab.png")) });
+	sidebarUI.insert({ SIDEBAR, new ButtonUI(renderer, this, Vector2D(0, 0), std::string("Assets/UI/Level Creator/Sidebar.png")) });
 
 	renderOrderUI = { TERRAIN, SPECIAL, ENEMIES, GAME_LOGIC, DECORATIONS, SIDEBAR };
 
@@ -278,7 +278,7 @@ void LevelCreator::LoadTileOptions(std::vector<tileData> tileVector)
 
 	for (tileData tileInfo : tileVector)
 	{
-		std::string tempFileName = "Tiles/" + tileInfo.fileName;
+		std::string tempFileName = "Assets/Tiles/" + tileInfo.fileName;
 
 		if (tileInfo.isAnimated)
 		{

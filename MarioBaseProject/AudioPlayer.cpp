@@ -5,27 +5,27 @@ AudioPlayer::AudioPlayer(std::vector<std::string> _soundClips, std::vector<std::
 {
 	for (std::string clipName : _soundClips)
 	{	
-		Mix_Chunk* soundClip = Mix_LoadWAV(("Audio/" + clipName + ".wav").c_str());
+		Mix_Chunk* soundClip = Mix_LoadWAV(("Assets/Audio/" + clipName + ".wav").c_str());
 		if (soundClip)
 		{
 			soundClips.insert({ clipName, soundClip });
 		}
 		else
 		{
-			std::cout << "Error loading sound clip " << "Audio/" + clipName + ".wav" << std::endl;
+			std::cout << "Error loading sound clip " << "Assets/Audio/" + clipName + ".wav" << std::endl;
 		}
 	}
 
 	for (std::string trackName : _musicTracks)
 	{
-		Mix_Music* musicTrack = Mix_LoadMUS(("Audio/" + trackName + ".wav").c_str());
+		Mix_Music* musicTrack = Mix_LoadMUS(("Assets/Audio/" + trackName + ".wav").c_str());
 		if (musicTrack)
 		{
 			musicTracks.insert({ trackName, musicTrack });
 		}
 		else
 		{
-			std::cout << "Error loading music track " << "Audio/" + trackName + ".wav" << std::endl;
+			std::cout << "Error loading music track " << "Assets/Audio/" + trackName + ".wav" << std::endl;
 		}
 	}
 }
@@ -52,6 +52,7 @@ void AudioPlayer::PlayMusic(std::string trackName)
 	{
 		if (currentTrack != trackName)
 		{
+			StopMusic();
 			Mix_PlayMusic(musicTracks.at(trackName), -1);
 			currentTrack = trackName;
 		}

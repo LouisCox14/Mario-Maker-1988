@@ -5,24 +5,24 @@
 Titlescreen::Titlescreen(SDL_Renderer* renderer, GameScreenManager* _screenManager) : GameScreen(renderer, _screenManager)
 {
 	background = new Texture2D(m_renderer, 2.0f);
-	background->LoadFromFile("UI/Titlescreen/Titlescreen.png");
+	background->LoadFromFile("Assets/UI/Titlescreen/Titlescreen.png");
 
 	curtain = new Texture2D(m_renderer, 2.0f);
-	curtain->LoadFromFile("UI/Titlescreen/Curtain.png");
+	curtain->LoadFromFile("Assets/UI/Titlescreen/Curtain.png");
 	curtainDrawTime = 2.0f;
 
 	title = new Texture2D(m_renderer, 2.0f);
-	title->LoadFromFile("UI/Titlescreen/Title.png");
+	title->LoadFromFile("Assets/UI/Titlescreen/Title.png");
 	titleFloatSpeed = 0.35f;
 	titleFloatOffset = 5.0f;
 
 	version = new Texture2D(m_renderer, 2.0f);
-	version->LoadFromFile("UI/Titlescreen/Version.png");
+	version->LoadFromFile("Assets/UI/Titlescreen/Version.png");
 
-	playButton = new ButtonUI(renderer, this, Vector2D(150, 260), std::string("UI/Titlescreen/Play Button.png"), 2.0f);
-	multiplayerButton = new ButtonUI(renderer, this, Vector2D(150, 285), std::string("UI/Titlescreen/Multiplayer Button.png"), 2.0f);
-	editButton = new ButtonUI(renderer, this, Vector2D(150, 310), std::string("UI/Titlescreen/Edit Button.png"), 2.0f);
-	createButton = new ButtonUI(renderer, this, Vector2D(150, 335), std::string("UI/Titlescreen/Create Button.png"), 2.0f);
+	playButton = new ButtonUI(renderer, this, Vector2D(150, 260), std::string("Assets/UI/Titlescreen/Play Button.png"), 2.0f);
+	multiplayerButton = new ButtonUI(renderer, this, Vector2D(150, 285), std::string("Assets/UI/Titlescreen/Multiplayer Button.png"), 2.0f);
+	editButton = new ButtonUI(renderer, this, Vector2D(150, 310), std::string("Assets/UI/Titlescreen/Edit Button.png"), 2.0f);
+	createButton = new ButtonUI(renderer, this, Vector2D(150, 335), std::string("Assets/UI/Titlescreen/Create Button.png"), 2.0f);
 
 	audioPlayer = new AudioPlayer({"ButtonClicked"}, {"MenuMusic"});
 	audioPlayer->PlayMusic("MenuMusic");
