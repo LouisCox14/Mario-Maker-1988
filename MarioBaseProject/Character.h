@@ -59,12 +59,13 @@ class Character
 		void Move(float deltaTime);
 		void Jump(float deltaTime);
 		void EndJump();
+		void EnemyJump();
+		PhysicsObject m_physics;
 
 	protected:
 		SDL_Renderer* m_renderer;
 		Vector2D m_position;
 		Texture2D* m_texture;
-		PhysicsObject m_physics;
 		Animator* animator;
 		AudioPlayer* audioPlayer;
 };

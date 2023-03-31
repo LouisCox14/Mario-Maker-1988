@@ -34,7 +34,7 @@ Character::Character(SDL_Renderer* renderer, LevelScreen* _levelScreen, std::str
 		xInput += 1;
 	}
 
-	audioPlayer = new AudioPlayer({ "Jump" }, {});
+	audioPlayer = new AudioPlayer({ "Jump", "EnemyStomp" }, {});
 }
 
 Character::~Character()
@@ -190,7 +190,10 @@ void Character::Jump(float deltaTime)
 
 	if (timeSinceJumpInput < jumpInputFudge && timeSinceGrounded < coyoteTime && !isJumping)
 	{
-		audioPlayer->PlayClip("Jump");
+		if (m_physics.sidesColliding[(int)BOTTOM] == BOTTOM)
+		{
+			audioPlayer->PlayClip("Jump");
+		}
 
 		if (jumpKeyDown)
 		{
@@ -218,4 +221,13 @@ void Character::EndJump()
 	{
 		m_physics.velocity.y *= 1 - jumpCounterFactor;
 	}
+}
+
+void Character::EnemyJump()
+{
+	audioPlayer->PlayClip("EnemyStomp");
+
+	m_physics.velocity.y = 0;
+	timeSinceGrounded = 0.0f;
+	timeSinceJumpInput = 0.0f;
 }

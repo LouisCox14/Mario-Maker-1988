@@ -22,6 +22,8 @@ LevelScreen::LevelScreen(SDL_Renderer* renderer, GameScreenManager* _screenManag
 		audioPlayer->PlayMusic("LevelMusic1");
 
 	audioPlayer->PlayClip("NewLevel");
+
+	enemies.push_back((Enemy*)new Goomba(m_renderer, Vector2D(120, 64), this, characters));
 }
 
 LevelScreen::~LevelScreen()
@@ -47,10 +49,21 @@ void LevelScreen::Render()
 	{
 		character->Render(GameScreen::cameraPosition);
 	}
+
+	//Draw the enemies
+	for (Enemy* enemy : enemies)
+	{
+		enemy->Render(GameScreen::cameraPosition);
+	}
 }
 
 void LevelScreen::Update(float deltaTime, SDL_Event e)
 {
+	for (Enemy* enemy : enemies)
+	{
+		enemy->Update(deltaTime, e, tileMap);
+	}
+
 	Vector2D newCameraPosition = Vector2D(0, 0);
 
 	for (Character* character : characters)

@@ -1,6 +1,8 @@
 #pragma once
 #include "Commons.h"
 #include "GameScreen.h"
+#include "Enemy.h"
+#include "Goomba.h"
 #include <vector>
 #include <string>
 
@@ -24,6 +26,8 @@ class LevelScreen : GameScreen
 
 		std::vector<Tile*> tileMap;
 		std::vector<Tile*> GetOnScreenTiles();
+
+		std::vector<Enemy*> enemies;
 
 		int levelWidth;
 		int levelHeight;

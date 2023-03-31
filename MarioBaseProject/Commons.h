@@ -8,7 +8,6 @@ enum SCREENS
 {
 	SCREEN_MENU,
 	SCREEN_LEVEL,
-	SCREEN_GAMEOVER,
 	SCREEN_LEVEL_CREATOR
 };
 
@@ -129,6 +128,11 @@ struct Vector2D
 inline float Distance(Vector2D a, Vector2D b)
 {
 	return sqrt(((a.x - b.x) * (a.x - b.x)) + ((a.y - b.y) * (a.y - b.y)));
+}
+
+inline Vector2D VectorLerp(Vector2D a, Vector2D b, float c)
+{
+	return a + (b - a) * c;
 }
 
 struct BoxCollider
