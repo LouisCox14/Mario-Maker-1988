@@ -38,6 +38,16 @@ struct Vector2D
 		y = initial_y;
 	}
 
+	float magnitude()
+	{
+		return sqrt((x * x) + (y * y));
+	}
+
+	Vector2D normalised()
+	{
+		return *this / this->magnitude();
+	}
+
 	Vector2D operator*(const float& a) const
 	{
 		return Vector2D(a * x, a * y);
@@ -115,6 +125,11 @@ struct Vector2D
 		return x == a.x && y == a.y;
 	}
 };
+
+inline float Distance(Vector2D a, Vector2D b)
+{
+	return sqrt(((a.x - b.x) * (a.x - b.x)) + ((a.y - b.y) * (a.y - b.y)));
+}
 
 struct BoxCollider
 {

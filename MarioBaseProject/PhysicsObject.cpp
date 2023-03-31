@@ -8,6 +8,7 @@
 PhysicsObject::PhysicsObject(Vector2D _startPosition, float _screenScale, Vector2D _collSize, Vector2D _drag, float _gravityScale)
 {
 	position = _startPosition;
+	lastPosition = _startPosition;
 	drag = _drag;
 	gravityScale = _gravityScale;
 	screenScale = _screenScale;
@@ -31,42 +32,49 @@ void PhysicsObject::AddGravity(float deltaTime)
 void PhysicsObject::ResolveCollisions(const std::vector<Tile*>& tileMap)
 {
 	sidesColliding = { NONE, NONE, NONE, NONE };
-	coll.position = position + (coll.size / 2);
 
 	for (Tile* tile : tileMap)
 	{
-		if (tile->hasCollider)
+		if (tile->hasCollider && Distance(tile->position, position) < TILE_RESOLUTION * CAMERA_SCALE * 2)
 		{
-			if (coll.OverlapCheck(tile->coll))
+			for (float dist = 0.0f; dist < Distance(position, lastPosition); dist += 2.0f)
 			{
-				switch (coll.GetCollisionSide(tile->coll))
+				coll.position = lastPosition + (coll.size / 2) + (position - lastPosition).normalised() * dist;
+				if (coll.OverlapCheck(tile->coll))
 				{
-				case TOP:
-					velocity.y = std::max(velocity.y, 0.0f);
-					sidesColliding[(int)TOP] = TOP;
-					break;
-				case BOTTOM:
-					velocity.y = std::min(velocity.y, 0.0f);
-					sidesColliding[(int)BOTTOM] = BOTTOM;
-					break;
-				case RIGHT:
-					velocity.x = std::min(velocity.x, 0.0f);
-					sidesColliding[(int)RIGHT] = RIGHT;
-					break;
-				case LEFT:
-					velocity.x = std::max(velocity.x, 0.0f);
-					sidesColliding[(int)LEFT] = LEFT;
-					break;
+					switch (coll.GetCollisionSide(tile->coll))
+					{
+					case TOP:
+						velocity.y = std::max(velocity.y, 0.0f);
+						sidesColliding[(int)TOP] = TOP;
+						break;
+					case BOTTOM:
+						velocity.y = std::min(velocity.y, 0.0f);
+						sidesColliding[(int)BOTTOM] = BOTTOM;
+						break;
+					case RIGHT:
+						velocity.x = std::min(velocity.x, 0.0f);
+						sidesColliding[(int)RIGHT] = RIGHT;
+						break;
+					case LEFT:
+						velocity.x = std::max(velocity.x, 0.0f);
+						sidesColliding[(int)LEFT] = LEFT;
+						break;
+					}
 				}
 			}
 		}
 	}
+
+	coll.position = lastPosition + (coll.size / 2);
 }
 
 void PhysicsObject::UpdatePhysics(float deltaTime, const std::vector<Tile*>& tileMap)
 {
 	AddGravity(deltaTime);
 	ResolveCollisions(tileMap);
+
+	lastPosition = position;
 
 	velocity += (velocity * -1) * drag * deltaTime;
 	position += velocity * deltaTime * screenScale;

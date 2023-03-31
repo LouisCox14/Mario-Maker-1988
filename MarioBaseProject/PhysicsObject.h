@@ -17,6 +17,7 @@ class PhysicsObject
 		float screenScale;
 
 		Vector2D position;
+		Vector2D lastPosition;
 		Vector2D velocity;
 
 		Vector2D drag;
