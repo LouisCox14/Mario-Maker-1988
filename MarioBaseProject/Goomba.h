@@ -3,7 +3,7 @@
 class Goomba : Enemy
 {
 	public:
-		Goomba(SDL_Renderer* renderer, Vector2D startPosition, LevelScreen* _levelScreen, std::vector<Character*> _characters);
+		Goomba(SDL_Renderer* renderer, Vector2D startPosition, LevelScreen* _levelScreen, FACING facing);
 		~Goomba();
 
 		void Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& tileMap) override;

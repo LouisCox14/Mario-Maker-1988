@@ -1,7 +1,7 @@
 #include "Goomba.h"
 #include "Character.h"
 
-Goomba::Goomba(SDL_Renderer* renderer, Vector2D startPosition, LevelScreen* _levelScreen, std::vector<Character*> _characters) : Enemy(renderer, startPosition, _levelScreen, _characters)
+Goomba::Goomba(SDL_Renderer* renderer, Vector2D startPosition, LevelScreen* _levelScreen, FACING facing) : Enemy(renderer, startPosition, _levelScreen, facing)
 {
 	spriteDirectory = "Assets/Sprites/Goomba/";
 	if (!m_texture->LoadFromFile(spriteDirectory + "Goomba.png"))
@@ -17,7 +17,7 @@ Goomba::Goomba(SDL_Renderer* renderer, Vector2D startPosition, LevelScreen* _lev
 	m_physics = new PhysicsObject(m_position, CAMERA_SCALE, Vector2D((float)m_texture->GetWidth(), (float)m_texture->GetHeight() - CAMERA_SCALE), Vector2D(2, 0), 1);
 	moveSpeed = 30;
 
-	deathAnimTime = 0.5f;
+	deathAnimTime = 0.35f;
 }
 
 Goomba::~Goomba()
@@ -52,7 +52,7 @@ void Goomba::Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& tile
 
 		m_position = m_physics->position;
 
-		for (Character* player : characters)
+		for (Character* player : levelScreen->characters)
 		{
 			if (m_physics->coll.OverlapCheck(player->m_physics.coll))
 			{
@@ -77,6 +77,7 @@ void Goomba::Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& tile
 			delete this;
 		}
 	}
+
 
 }
 

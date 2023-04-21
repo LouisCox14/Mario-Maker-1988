@@ -43,6 +43,8 @@ bool Texture2D::LoadFromFile(std::string path)
 		SDL_FreeSurface(p_surface);
 	}
 
+	filePath = path;
+
 	// Return whether the process was successful
 	return m_texture != nullptr;
 }

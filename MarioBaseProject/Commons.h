@@ -123,6 +123,11 @@ struct Vector2D
 	{
 		return x == a.x && y == a.y;
 	}
+
+	bool operator!=(const Vector2D& a) const
+	{
+		return x != a.x || y != a.y;
+	}
 };
 
 inline float Distance(Vector2D a, Vector2D b)

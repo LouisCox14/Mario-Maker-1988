@@ -28,8 +28,17 @@ LevelCreator::LevelCreator(SDL_Renderer* renderer, GameScreenManager* _screenMan
 
 	renderOrderUI = { TERRAIN, SPECIAL, ENEMIES, GAME_LOGIC, DECORATIONS, SIDEBAR };
 
-	selectedTile = terrainTiles[0];
+	enemyIcons.insert({GOOMBA, new Texture2D(renderer, CAMERA_SCALE)});
+	enemyIcons.at(GOOMBA)->LoadFromFile("Assets/Sprites/Goomba/Goomba.png");
 
+	gameLogicIcons.insert({ START_POS, new Texture2D(renderer, CAMERA_SCALE) });
+	gameLogicIcons.at(START_POS)->LoadFromFile("Assets/Sprites/Small Mario/Idle.png");
+
+	selectedTile = terrainTiles[0];
+	selectedEnemy = GOOMBA;
+	selectedGameOption = START_POS;
+
+	startPos = GridToPixelPos(Vector2D(2, 10));
 	if (importPath != "")
 	{
 		ImportFile(importPath);
@@ -64,6 +73,13 @@ void LevelCreator::Render()
 	{
 		tile->Render(GameScreen::cameraPosition);
 	}
+
+	for (std::pair<EnemyType, Vector2D> enemy : enemies)
+	{
+		enemyIcons.at(enemy.first)->Render(enemy.second - GameScreen::cameraPosition, SDL_FLIP_NONE);
+	}
+
+	gameLogicIcons.at(START_POS)->Render(startPos - GameScreen::cameraPosition, SDL_FLIP_NONE);
 
 	for (UI_TABS tab : renderOrderUI)
 	{
@@ -188,9 +204,25 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 	{
 		if (leftMouseDown)
 		{
-			if (GetTileIndexAtGridPos(mouseGridPos) == -1)
+			if (GetTileIndexAtGridPos(mouseGridPos) == -1 && GetEnemyIndexAtGridPos(mouseGridPos) == -1 && PixelToGridPos(startPos) != mouseGridPos)
 			{
-				PlaceTile(mouseGridPos, selectedTile);
+				switch (selectedType)
+				{
+				case ENEMIES:
+					enemies.push_back(std::pair<EnemyType, Vector2D> {selectedEnemy, GridToPixelPos(mouseGridPos)});
+					break;
+				case GAME_LOGIC:
+					switch (selectedGameOption)
+					{
+						case START_POS:
+							startPos = GridToPixelPos(mouseGridPos);
+							break;
+					}
+					break;
+				default:
+					PlaceTile(mouseGridPos, selectedTile);
+					break;
+				}
 			}
 		}
 		else if (rightMouseDown)
@@ -204,6 +236,14 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 				tileMap.erase(tileMap.begin() + targetTile);
 
 				ReloadNeighbouringComposites(mouseGridPos, tempTileInfo);
+			}
+			else
+			{
+				int targetEnemy = GetEnemyIndexAtGridPos(mouseGridPos);
+				if (targetEnemy != -1)
+				{
+					enemies.erase(enemies.begin() + targetEnemy);
+				}
 			}
 		}
 	}
@@ -228,19 +268,19 @@ void LevelCreator::ButtonClicked(ButtonUI* clickedButton, bool leftClick)
 				switch (activeTab)
 				{
 					case TERRAIN:
-						LoadTileOptions(terrainTiles);
+						LoadTabOptions(GetTilePaths(terrainTiles));
 						break;
 					case SPECIAL:
-						LoadTileOptions(specialTiles);
+						LoadTabOptions(GetTilePaths(specialTiles));
 						break;
 					case ENEMIES:
-						LoadTileOptions({});
+						LoadTabOptions(GetEnemyPaths());
 						break;
 					case GAME_LOGIC:
-						LoadTileOptions({});
+						LoadTabOptions(GetGameLogicPaths());
 						break;
 					case DECORATIONS:
-						LoadTileOptions(decorationTiles);
+						LoadTabOptions(GetTilePaths(decorationTiles));
 						break;
 				}
 			}
@@ -252,7 +292,26 @@ void LevelCreator::ButtonClicked(ButtonUI* clickedButton, bool leftClick)
 		}
 		else if (GetButtonIndex(optionsDisplayed, clickedButton) != -1)
 		{
-			selectedTile = tileOptions[GetButtonIndex(optionsDisplayed, clickedButton)];
+			selectedType = activeTab;
+
+			switch (activeTab)
+			{
+			case TERRAIN:
+				selectedTile = terrainTiles[GetButtonIndex(optionsDisplayed, clickedButton)];
+				break;
+			case SPECIAL:
+				selectedTile = specialTiles[GetButtonIndex(optionsDisplayed, clickedButton)];
+				break;
+			case DECORATIONS:
+				selectedTile = decorationTiles[GetButtonIndex(optionsDisplayed, clickedButton)];
+				break;
+			case ENEMIES:
+				selectedEnemy = static_cast<EnemyType>(GetButtonIndex(optionsDisplayed, clickedButton));
+				break;
+			case GAME_LOGIC:
+				selectedGameOption = static_cast<GAME_LOGIC_OPTIONS>(GetButtonIndex(optionsDisplayed, clickedButton));
+				break;
+			}
 		}
 	}
 }
@@ -269,12 +328,9 @@ int LevelCreator::GetButtonIndex(std::vector<ButtonUI*> buttonVector, ButtonUI* 
 	return -1;
 }
 
-void LevelCreator::LoadTileOptions(std::vector<tileData> tileVector)
+std::vector<std::string> LevelCreator::GetTilePaths(std::vector<tileData> tileVector)
 {
-	tileOptions = tileVector;
-	optionsDisplayed.clear();
-
-	int yOffset = 16;
+	std::vector<std::string> tilePaths = {};
 
 	for (tileData tileInfo : tileVector)
 	{
@@ -292,7 +348,45 @@ void LevelCreator::LoadTileOptions(std::vector<tileData> tileVector)
 
 		tempFileName += ".png";
 
-		optionsDisplayed.push_back(new ButtonUI(m_renderer, this, Vector2D(SCREEN_WIDTH - 64, yOffset), tempFileName, 3.0f));
+		tilePaths.push_back(tempFileName);
+	}
+
+	return tilePaths;
+}
+
+std::vector<std::string> LevelCreator::GetEnemyPaths()
+{
+	std::vector<std::string> enemyPaths = {};
+
+	for (std::pair<EnemyType, Texture2D*> enemy : enemyIcons)
+	{
+		enemyPaths.push_back(enemy.second->GetFilePath());
+	}
+
+	return enemyPaths;
+}
+
+std::vector<std::string> LevelCreator::GetGameLogicPaths()
+{
+	std::vector<std::string> gameLogicPaths = {};
+
+	for (std::pair<GAME_LOGIC_OPTIONS, Texture2D*> gameLogicIcon : gameLogicIcons)
+	{
+		gameLogicPaths.push_back(gameLogicIcon.second->GetFilePath());
+	}
+
+	return gameLogicPaths;
+}
+
+void LevelCreator::LoadTabOptions(std::vector<std::string> filePaths)
+{
+	optionsDisplayed.clear();
+
+	int yOffset = 16;
+
+	for (std::string filePath : filePaths)
+	{
+		optionsDisplayed.push_back(new ButtonUI(m_renderer, this, Vector2D(SCREEN_WIDTH - 64, yOffset), filePath, 3.0f));
 
 		yOffset += 64;
 	}
@@ -305,9 +399,15 @@ Vector2D LevelCreator::PixelToGridPos(Vector2D pixelPosition)
 	return Vector2D((int)(gridPosition.x), (int)(gridPosition.y));
 }
 
+Vector2D LevelCreator::GridToPixelPos(Vector2D pixelPosition)
+{
+	return pixelPosition * TILE_RESOLUTION * camScale;
+}
+
+
 void LevelCreator::PlaceTile(Vector2D gridPosition, tileData tileInfo)
 {
-	tileMap.push_back(new Tile(m_renderer, gridPosition * TILE_RESOLUTION * camScale, tileInfo, tileMap, camScale));
+	tileMap.push_back(new Tile(m_renderer, GridToPixelPos(gridPosition), tileInfo, tileMap, camScale));
 
 	ReloadNeighbouringComposites(gridPosition, tileInfo);
 }
@@ -371,6 +471,21 @@ int LevelCreator::GetTileIndexAtGridPos(Vector2D gridPosition)
 	return -1;
 }
 
+int LevelCreator::GetEnemyIndexAtGridPos(Vector2D gridPosition)
+{
+	Vector2D pixelPosition = gridPosition * TILE_RESOLUTION * camScale;
+
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		if (enemies[i].second == pixelPosition)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
 void LevelCreator::ExportFile()
 {
 	if (exportPath == "")
@@ -391,8 +506,12 @@ void LevelCreator::ExportFile()
 
 	Json::Value levelObject;
 
-	int i = 0;
-	Json::Value tiles(Json::arrayValue);
+	Json::Value startPosJSON;
+	startPosJSON["x"] = startPos.x;
+	startPosJSON["y"] = startPos.y;
+	levelObject["Start Position"] = startPosJSON;
+
+	Json::Value tilesJSON(Json::arrayValue);
 	for (Tile* tile : tileMap)
 	{
 		Json::Value currentTile;
@@ -411,11 +530,23 @@ void LevelCreator::ExportFile()
 
 		currentTile["TileDataReference"] = tile->tileInfo.fileName;
 
-		tiles.append(currentTile);
-		i++;
+		tilesJSON.append(currentTile);
 	}
 
-	levelObject["Tiles"] = tiles;
+	levelObject["Tiles"] = tilesJSON;
+
+	Json::Value enemiesJSON(Json::arrayValue);
+	for (std::pair<EnemyType, Vector2D> enemy : enemies)
+	{
+		Json::Value currentEnemy;
+		currentEnemy["x"] = enemy.second.x;
+		currentEnemy["y"] = enemy.second.y;
+		currentEnemy["Type"] = static_cast<int>(enemy.first);
+
+		enemiesJSON.append(currentEnemy);
+	}
+
+	levelObject["Enemies"] = enemiesJSON;
 
 	Json::StyledWriter styledWriter;
 	fout << styledWriter.write(levelObject);
@@ -439,6 +570,8 @@ void LevelCreator::ImportFile(std::string importPath)
 
 	reader.parse(fin, json);
 
+	startPos = Vector2D(json["Start Position"]["x"].asFloat(), json["Start Position"]["y"].asFloat());
+
 	for (Json::Value tile : json["Tiles"])
 	{
 		Vector2D tilePosition = Vector2D(tile["x"].asFloat(), tile["y"].asFloat());
@@ -452,6 +585,14 @@ void LevelCreator::ImportFile(std::string importPath)
 		}
 
 		tileMap.push_back(new Tile(m_renderer, tilePosition, tileInfo, filePath, collSides, CAMERA_SCALE));
+	}
+
+	for (Json::Value enemy : json["Enemies"])
+	{
+		Vector2D enemyPosition = Vector2D(enemy["x"].asFloat(), enemy["y"].asFloat());
+		EnemyType enemyType = static_cast<EnemyType>(enemy["Type"].asInt());
+
+		enemies.push_back(std::pair<EnemyType, Vector2D> {enemyType, enemyPosition});
 	}
 
 	fin.close();

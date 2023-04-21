@@ -11,7 +11,7 @@ class LevelScreen;
 class Enemy
 {
 	public:
-		Enemy(SDL_Renderer* renderer, Vector2D startPosition, LevelScreen* _levelScreen, std::vector<Character*> _characters);
+		Enemy(SDL_Renderer* renderer, Vector2D startPosition, LevelScreen* _levelScreen, FACING facing);
 		~Enemy();
 
 		void Render(Vector2D cameraPosition);
@@ -29,6 +29,5 @@ class Enemy
 		Vector2D m_position;
 		FACING m_facing_direction;
 
-		std::vector<Character*> characters;
 		LevelScreen* levelScreen;
 };

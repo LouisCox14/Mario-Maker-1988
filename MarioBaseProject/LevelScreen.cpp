@@ -2,6 +2,7 @@
 #include "Texture2D.h"
 #include "SmallMario.h"
 #include "SmallLuigi.h"
+#include "EnemySpawner.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -22,8 +23,6 @@ LevelScreen::LevelScreen(SDL_Renderer* renderer, GameScreenManager* _screenManag
 		audioPlayer->PlayMusic("LevelMusic1");
 
 	audioPlayer->PlayClip("NewLevel");
-
-	enemies.push_back((Enemy*)new Goomba(m_renderer, Vector2D(120, 64), this, characters));
 }
 
 LevelScreen::~LevelScreen()
@@ -61,7 +60,19 @@ void LevelScreen::Update(float deltaTime, SDL_Event e)
 {
 	for (Enemy* enemy : enemies)
 	{
-		enemy->Update(deltaTime, e, tileMap);
+		if (enemy->m_position.x < cameraPosition.x - TILE_RESOLUTION * CAMERA_SCALE || enemy->m_position.x > cameraPosition.x + SCREEN_WIDTH)
+		{
+			delete enemy;
+		}
+		else
+		{
+			enemy->Update(deltaTime, e, tileMap);
+		}
+	}
+
+	for (EnemySpawner* enemySpawner : enemySpawners)
+	{
+		enemySpawner->Update();
 	}
 
 	Vector2D newCameraPosition = Vector2D(0, 0);
@@ -134,6 +145,8 @@ void LevelScreen::LoadFromJSON()
 
 	reader.parse(fin, json);
 
+	startPos = Vector2D(json["Start Position"]["x"].asFloat(), json["Start Position"]["y"].asFloat());
+
 	for (Json::Value tile : json["Tiles"])
 	{
 		Vector2D tilePosition = Vector2D(tile["x"].asFloat(), tile["y"].asFloat());
@@ -147,6 +160,14 @@ void LevelScreen::LoadFromJSON()
 		}
 
 		tileMap.push_back(new Tile(m_renderer, tilePosition, tileInfo, filePath, collSides, CAMERA_SCALE));
+	}
+
+	for (Json::Value enemy : json["Enemies"])
+	{
+		Vector2D enemyPosition = Vector2D(enemy["x"].asFloat(), enemy["y"].asFloat());
+		EnemyType enemyType = static_cast<EnemyType>(enemy["Type"].asInt());
+
+		enemySpawners.push_back(new EnemySpawner(m_renderer, this, &cameraPosition, enemyType, enemyPosition));
 	}
 
 	fin.close();
@@ -173,11 +194,11 @@ bool LevelScreen::SetUpLevel(bool multiplayer)
 	levelHeight = highestY;
 
 	// Set up player character
-	characters.push_back((Character*)new SmallMario(m_renderer, this, "Assets/Sprites/Small Mario/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
+	characters.push_back((Character*)new SmallMario(m_renderer, this, "Assets/Sprites/Small Mario/Idle.png", startPos, CAMERA_SCALE, cameraPosition));
 
 	if (multiplayer)
 	{
-		characters.push_back((Character*)new SmallLuigi(m_renderer, this, "Assets/Sprites/Small Luigi/Idle.png", Vector2D(64, 64), CAMERA_SCALE, cameraPosition));
+		characters.push_back((Character*)new SmallLuigi(m_renderer, this, "Assets/Sprites/Small Luigi/Idle.png", startPos, CAMERA_SCALE, cameraPosition));
 	}
 
 	return true;

@@ -1,14 +1,13 @@
 #include "Enemy.h"
 #include "LevelScreen.h"
 
-Enemy::Enemy(SDL_Renderer* renderer, Vector2D startPosition, LevelScreen* _levelScreen, std::vector<Character*> _characters)
+Enemy::Enemy(SDL_Renderer* renderer, Vector2D startPosition, LevelScreen* _levelScreen, FACING facing)
 {
 	levelScreen = _levelScreen;
 	m_renderer = renderer;
 	m_position = startPosition;
-	characters = _characters;
 
-	m_facing_direction = FACING_RIGHT;
+	m_facing_direction = facing;
 	m_texture = new Texture2D(m_renderer, CAMERA_SCALE);
 }
 

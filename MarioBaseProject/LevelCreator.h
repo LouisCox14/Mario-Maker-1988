@@ -3,6 +3,7 @@
 #include "Commons.h"
 #include "Constants.h"
 #include "TileData.h"
+#include "EnemySpawner.h"
 #include "ButtonUI.h"
 #include <vector>
 #include <string>
@@ -16,6 +17,11 @@ enum UI_TABS
 	GAME_LOGIC,
 	DECORATIONS,
 	SIDEBAR
+};
+
+enum GAME_LOGIC_OPTIONS
+{
+	START_POS
 };
 
 class LevelCreator : GameScreen
@@ -43,9 +49,18 @@ class LevelCreator : GameScreen
 		UI_TABS activeTab = SIDEBAR;
 		bool buttonClicked;
 		std::vector<ButtonUI*> optionsDisplayed;
-		std::vector<tileData> tileOptions;
+
+		UI_TABS selectedType;
 
 		tileData selectedTile;
+		EnemyType selectedEnemy;
+		GAME_LOGIC_OPTIONS selectedGameOption;
+
+		std::map<GAME_LOGIC_OPTIONS, Texture2D*> gameLogicIcons;
+		Vector2D startPos;
+
+		std::map<EnemyType, Texture2D*> enemyIcons;
+		std::vector<std::pair<EnemyType, Vector2D>> enemies;
 
 		std::vector<Tile*> tileMap;
 
@@ -53,12 +68,21 @@ class LevelCreator : GameScreen
 		std::string exportPath;
 
 	private:
-		void LoadTileOptions(std::vector<tileData> tileVector);
+		std::vector<std::string> GetTilePaths(std::vector<tileData> tileVector);
+		std::vector<std::string> GetEnemyPaths();
+		std::vector<std::string> GetGameLogicPaths();
+
+		void LoadTabOptions(std::vector<std::string> filePaths);
+
 		void ReloadNeighbouringComposites(Vector2D gridPosition, tileData tileInfo);
 		std::vector<Tile*> GetNeighbouringComposites(Vector2D gridPosition, tileData tileInfo);
 		Vector2D PixelToGridPos(Vector2D pixelPosition);
+		Vector2D GridToPixelPos(Vector2D gridPosition);
 		void PlaceTile(Vector2D gridPosition, tileData tileInfo);
+
 		int GetTileIndexAtGridPos(Vector2D gridPosition);
+		int GetEnemyIndexAtGridPos(Vector2D gridPosition);
+
 		int GetButtonIndex(std::vector<ButtonUI*> buttonVector, ButtonUI* targetButton);
 		void ExportFile();
 		void ImportFile(std::string importPath);

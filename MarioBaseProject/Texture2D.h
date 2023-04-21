@@ -20,6 +20,7 @@ class Texture2D
 
 		int GetWidth() { return m_width; }
 		int GetHeight() { return m_height; }
+		std::string GetFilePath() { return filePath; }
 
 	private:
 		SDL_Renderer* m_renderer;
@@ -27,6 +28,8 @@ class Texture2D
 
 		int m_width;
 		int m_height;
+
+		std::string filePath;
 
 		Vector2D imageRect;
 };

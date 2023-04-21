@@ -2,12 +2,12 @@
 #include "Commons.h"
 #include "GameScreen.h"
 #include "Enemy.h"
-#include "Goomba.h"
 #include <vector>
 #include <string>
 
 class Texture2D;
 class Character;
+class EnemySpawner;
 
 class LevelScreen : GameScreen
 {
@@ -28,12 +28,14 @@ class LevelScreen : GameScreen
 		std::vector<Tile*> GetOnScreenTiles();
 
 		std::vector<Enemy*> enemies;
+		std::vector<EnemySpawner*> enemySpawners;
 
 		int levelWidth;
 		int levelHeight;
 
-	private:
+		Vector2D startPos;
 		std::vector<Character*> characters;
 
+	private:
 		bool SetUpLevel(bool multiplayer);
 };

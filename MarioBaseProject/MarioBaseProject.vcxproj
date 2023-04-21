@@ -171,6 +171,7 @@ xcopy "$(ProjectDir)SDL2\DLL\*.*" "$(OutDir)" /Y</Command>
     <ClCompile Include="ButtonUI.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemySpawner.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="JSONCPP\dist\jsoncpp.cpp" />
@@ -194,6 +195,7 @@ xcopy "$(ProjectDir)SDL2\DLL\*.*" "$(OutDir)" /Y</Command>
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemySpawner.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="JSONCPP\dist\json\json-forwards.h" />
