@@ -77,17 +77,19 @@ struct tileData
 };
 
 const std::vector<tileData> terrainTiles = {
-	tileData("Ground", COMPOSITE, COMPOSITE, {TOP, NONE, RIGHT, LEFT}, {TOP, NONE, RIGHT, LEFT}, " Top"),
+	tileData("Ground", COMPOSITE, COMPOSITE, {TOP, NONE, RIGHT, LEFT}, {TOP, BOTTOM, RIGHT, LEFT}, " Top"),
+	tileData("Wood Block", SINGLE, COMPOSITE, {NONE, NONE, NONE, NONE}, {TOP, BOTTOM, RIGHT, LEFT}),
 	tileData("Green Block", COMPOSITE, COMPOSITE, {TOP, BOTTOM, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right"),
 	tileData("White Block", COMPOSITE, COMPOSITE, {TOP, BOTTOM, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right"),
 	tileData("Blue Block", COMPOSITE, COMPOSITE, {TOP, BOTTOM, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right"),
-	tileData("Pink Block", COMPOSITE, COMPOSITE, {TOP, BOTTOM, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right")
+	tileData("Pink Block", COMPOSITE, COMPOSITE, {TOP, BOTTOM, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right"),
+	tileData("Hill", COMPOSITE, COMPOSITE, {TOP, NONE, RIGHT, LEFT}, {TOP, NONE, NONE, NONE}, " Top Right")
 };
 
 const std::vector<tileData> specialTiles = {
 	tileData("Shiny Block", 4, 0.15f),
 	tileData("Question Block", 4, 0.15f),
-	tileData("Pipe", COMPOSITE, COMPOSITE, {TOP, NONE, RIGHT, LEFT}, {TOP, NONE, RIGHT, LEFT}, " Top Right")
+	tileData("Pipe", COMPOSITE, COMPOSITE, {TOP, NONE, RIGHT, LEFT}, {TOP, BOTTOM, RIGHT, LEFT}, " Top Right")
 };
 
 const std::vector<tileData> decorationTiles = {
@@ -99,10 +101,12 @@ const std::vector<tileData> decorationTiles = {
 
 const std::map<std::string, tileData> allTiles = {
 	{"Ground", terrainTiles[0]},
-	{"Green Block", terrainTiles[1]},
-	{"White Block", terrainTiles[2]},
-	{"Blue Block", terrainTiles[3]},
+	{"Wood Block", terrainTiles[1]},
+	{"Green Block", terrainTiles[2]},
+	{"White Block", terrainTiles[3]},
+	{"Blue Block", terrainTiles[4]},
 	{"Pink Block", terrainTiles[4]},
+	{"Hill", terrainTiles[5]},
 	{"Shiny Block", specialTiles[0]},
 	{"Question Block", specialTiles[1]},
 	{"Pipe", specialTiles[2]},

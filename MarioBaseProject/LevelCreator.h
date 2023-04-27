@@ -51,6 +51,8 @@ class LevelCreator : GameScreen
 		std::vector<ButtonUI*> optionsDisplayed;
 
 		UI_TABS selectedType;
+		int maxScrollOffset;
+		int scrollOffset;
 
 		tileData selectedTile;
 		EnemyType selectedEnemy;
@@ -64,7 +66,8 @@ class LevelCreator : GameScreen
 
 		std::vector<Tile*> tileMap;
 
-		ButtonUI* exportButton;
+		ButtonUI* playButton;
+		ButtonUI* saveButton;
 		std::string exportPath;
 
 	private:
@@ -76,14 +79,17 @@ class LevelCreator : GameScreen
 
 		void ReloadNeighbouringComposites(Vector2D gridPosition, tileData tileInfo);
 		std::vector<Tile*> GetNeighbouringComposites(Vector2D gridPosition, tileData tileInfo);
+
 		Vector2D PixelToGridPos(Vector2D pixelPosition);
 		Vector2D GridToPixelPos(Vector2D gridPosition);
+
 		void PlaceTile(Vector2D gridPosition, tileData tileInfo);
 
 		int GetTileIndexAtGridPos(Vector2D gridPosition);
 		int GetEnemyIndexAtGridPos(Vector2D gridPosition);
 
 		int GetButtonIndex(std::vector<ButtonUI*> buttonVector, ButtonUI* targetButton);
+
 		void ExportFile();
 		void ImportFile(std::string importPath);
 };

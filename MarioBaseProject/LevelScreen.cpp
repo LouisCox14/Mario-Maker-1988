@@ -93,7 +93,7 @@ void LevelScreen::Update(float deltaTime, SDL_Event e)
 	newCameraPosition -= Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT) / 2;
 
 	newCameraPosition.x = std::max(newCameraPosition.x, 0.0f);
-	newCameraPosition.x = std::min(newCameraPosition.x, (float)levelWidth - SCREEN_WIDTH);
+	newCameraPosition.x = std::min(newCameraPosition.x, std::max((float)levelWidth - SCREEN_WIDTH, 0.0f));
 
 	newCameraPosition.y = std::max(newCameraPosition.y, 0.0f);
 	newCameraPosition.y = std::min(newCameraPosition.y, (float)levelHeight - SCREEN_HEIGHT);
@@ -145,7 +145,7 @@ void LevelScreen::LoadFromJSON()
 
 	reader.parse(fin, json);
 
-	startPos = Vector2D(json["Start Position"]["x"].asFloat(), json["Start Position"]["y"].asFloat());
+	startPos = Vector2D(json["StartPosition"]["x"].asFloat(), json["StartPosition"]["y"].asFloat());
 
 	for (Json::Value tile : json["Tiles"])
 	{

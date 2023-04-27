@@ -17,7 +17,8 @@ LevelCreator::LevelCreator(SDL_Renderer* renderer, GameScreenManager* _screenMan
 	camScale = 2.0f;
 	scaleSpeed = 0.15f;
 
-	exportButton = new ButtonUI(renderer, this, Vector2D(0, 0), std::string("Assets/UI/Level Creator/Export Button.png"));
+	playButton = new ButtonUI(renderer, this, Vector2D(16, 0), std::string("Assets/UI/Level Creator/Play Button.png"));
+	saveButton = new ButtonUI(renderer, this, Vector2D(64, 0), std::string("Assets/UI/Level Creator/Download Button.png"));
 
 	sidebarUI.insert({ TERRAIN, new ButtonUI(renderer, this, Vector2D(0, 16), std::string("Assets/UI/Level Creator/Terrain Tab.png")) });
 	sidebarUI.insert({ SPECIAL, new ButtonUI(renderer, this, Vector2D(0, 64), std::string("Assets/UI/Level Creator/Special Tab.png")) });
@@ -38,10 +39,13 @@ LevelCreator::LevelCreator(SDL_Renderer* renderer, GameScreenManager* _screenMan
 	selectedEnemy = GOOMBA;
 	selectedGameOption = START_POS;
 
-	startPos = GridToPixelPos(Vector2D(2, 10));
 	if (importPath != "")
 	{
 		ImportFile(importPath);
+	}
+	else
+	{
+		startPos = GridToPixelPos(Vector2D(2, 10));
 	}
 
 	audioPlayer = new AudioPlayer({ "NewLevel", "ButtonClicked"}, {"LevelCreatorMusic"});
@@ -91,7 +95,8 @@ void LevelCreator::Render()
 		tileOption->Render();
 	}
 
-	exportButton->Render();
+	playButton->Render();
+	saveButton->Render();
 }
 
 void LevelCreator::Update(float deltaTime, SDL_Event e)
@@ -128,9 +133,8 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 		tileOption->Update(deltaTime, e);
 	}
 
-
-	exportButton->Update(deltaTime, e);
-
+	saveButton->Update(deltaTime, e);
+	playButton->Update(deltaTime, e);
 
 	SDL_GetMouseState(&mouseX, &mouseY);
 	Vector2D mouseGridPos = PixelToGridPos(Vector2D((float)mouseX, (float)mouseY));
@@ -197,6 +201,20 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 							break;
 				}
 				break;
+			case SDL_MOUSEWHEEL:
+				if (sidebarUI.at(SIDEBAR)->ClickInBounds(Vector2D((float)mouseX, (float)mouseY)))
+				{
+					int offsetChange = e.wheel.y * 5 + scrollOffset;
+					offsetChange = std::min(0, std::max(maxScrollOffset, offsetChange));
+					offsetChange -= scrollOffset;
+
+					for (ButtonUI* button : optionsDisplayed)
+					{
+						button->position.y += offsetChange;
+					}
+
+					scrollOffset += offsetChange;
+				}
 		}
 	}
 
@@ -204,24 +222,27 @@ void LevelCreator::Update(float deltaTime, SDL_Event e)
 	{
 		if (leftMouseDown)
 		{
-			if (GetTileIndexAtGridPos(mouseGridPos) == -1 && GetEnemyIndexAtGridPos(mouseGridPos) == -1 && PixelToGridPos(startPos) != mouseGridPos)
+			if (GetEnemyIndexAtGridPos(mouseGridPos) == -1 && PixelToGridPos(startPos) != mouseGridPos && (GetTileIndexAtGridPos(mouseGridPos) == -1 || tileMap[GetTileIndexAtGridPos(mouseGridPos)]->tileInfo.collisionSides != std::array<COLLISION_SIDES, 4> {TOP, BOTTOM, RIGHT, LEFT}))
 			{
 				switch (selectedType)
 				{
-				case ENEMIES:
-					enemies.push_back(std::pair<EnemyType, Vector2D> {selectedEnemy, GridToPixelPos(mouseGridPos)});
-					break;
-				case GAME_LOGIC:
-					switch (selectedGameOption)
-					{
-						case START_POS:
-							startPos = GridToPixelPos(mouseGridPos);
+					case ENEMIES:
+						enemies.push_back(std::pair<EnemyType, Vector2D> {selectedEnemy, GridToPixelPos(mouseGridPos)});
+						break;
+					case GAME_LOGIC:
+						switch (selectedGameOption)
+						{
+							case START_POS:
+								startPos = GridToPixelPos(mouseGridPos);
+								break;
+						}
+						break;
+					default:
+						if (GetTileIndexAtGridPos(mouseGridPos) == -1)
+						{
+							PlaceTile(mouseGridPos, selectedTile);
 							break;
-					}
-					break;
-				default:
-					PlaceTile(mouseGridPos, selectedTile);
-					break;
+						}
 				}
 			}
 		}
@@ -286,9 +307,14 @@ void LevelCreator::ButtonClicked(ButtonUI* clickedButton, bool leftClick)
 			}
 		}
 
-		if (clickedButton == exportButton)
+		if (clickedButton == playButton || clickedButton == saveButton)
 		{
 			ExportFile();
+
+			if (clickedButton == playButton)
+			{
+				GameScreen::screenManager->ChangeScreen(SCREEN_LEVEL, exportPath);
+			}
 		}
 		else if (GetButtonIndex(optionsDisplayed, clickedButton) != -1)
 		{
@@ -390,6 +416,9 @@ void LevelCreator::LoadTabOptions(std::vector<std::string> filePaths)
 
 		yOffset += 64;
 	}
+
+	scrollOffset = 0;
+	maxScrollOffset = SCREEN_HEIGHT - yOffset;
 }
 
 Vector2D LevelCreator::PixelToGridPos(Vector2D pixelPosition)
@@ -509,7 +538,7 @@ void LevelCreator::ExportFile()
 	Json::Value startPosJSON;
 	startPosJSON["x"] = startPos.x;
 	startPosJSON["y"] = startPos.y;
-	levelObject["Start Position"] = startPosJSON;
+	levelObject["StartPosition"] = startPosJSON;
 
 	Json::Value tilesJSON(Json::arrayValue);
 	for (Tile* tile : tileMap)
@@ -552,8 +581,6 @@ void LevelCreator::ExportFile()
 	fout << styledWriter.write(levelObject);
 
 	fout.close();
-
-	GameScreen::screenManager->ChangeScreen(SCREEN_LEVEL, exportPath);
 }
 
 void LevelCreator::ImportFile(std::string importPath)
@@ -570,7 +597,7 @@ void LevelCreator::ImportFile(std::string importPath)
 
 	reader.parse(fin, json);
 
-	startPos = Vector2D(json["Start Position"]["x"].asFloat(), json["Start Position"]["y"].asFloat());
+	startPos = Vector2D(json["StartPosition"]["x"].asFloat(), json["StartPosition"]["y"].asFloat());
 
 	for (Json::Value tile : json["Tiles"])
 	{
