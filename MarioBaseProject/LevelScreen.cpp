@@ -27,11 +27,10 @@ LevelScreen::LevelScreen(SDL_Renderer* renderer, GameScreenManager* _screenManag
 
 LevelScreen::~LevelScreen()
 {
-	for (Character* character : characters)
-	{
-		delete character;
-		character = nullptr;
-	}
+	characters.clear();
+	tileMap.clear();
+	enemies.clear();
+	enemySpawners.clear();
 }
 
 void LevelScreen::Render()
@@ -69,6 +68,8 @@ void LevelScreen::Update(float deltaTime, SDL_Event e)
 			enemy->Update(deltaTime, e, tileMap);
 		}
 	}
+
+	enemies.erase(std::remove(begin(enemies), end(enemies), nullptr), end(enemies));
 
 	for (EnemySpawner* enemySpawner : enemySpawners)
 	{

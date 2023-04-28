@@ -20,6 +20,7 @@ GameScreen::~GameScreen()
 {
 	m_renderer = nullptr;
 	audioPlayer = nullptr;
+	screenManager = nullptr;
 }
 
 void GameScreen::Render() {}

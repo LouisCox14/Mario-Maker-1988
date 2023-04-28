@@ -20,10 +20,7 @@ Goomba::Goomba(SDL_Renderer* renderer, Vector2D startPosition, LevelScreen* _lev
 	deathAnimTime = 0.35f;
 }
 
-Goomba::~Goomba()
-{
-
-}
+Goomba::~Goomba() {}
 
 void Goomba::Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& tileMap)
 {
@@ -56,14 +53,14 @@ void Goomba::Update(float deltaTime, SDL_Event e, const std::vector<Tile*>& tile
 		{
 			if (m_physics->coll.OverlapCheck(player->m_physics.coll))
 			{
-				if (m_physics->coll.GetCollisionSide(player->m_physics.coll) != TOP)
-				{
-					player->TakeDamage();
-				}
-				else
+				if ((m_physics->coll.position.y > player->m_physics.coll.position.y + player->m_physics.coll.size.y / 2 && player->m_physics.velocity.y > 0) || m_physics->coll.GetCollisionSide(player->m_physics.coll) == TOP)
 				{
 					player->EnemyJump();
 					TakeDamage();
+				}
+				else
+				{
+					player->TakeDamage();
 				}
 			}
 		}

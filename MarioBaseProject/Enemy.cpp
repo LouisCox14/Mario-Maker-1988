@@ -13,8 +13,15 @@ Enemy::Enemy(SDL_Renderer* renderer, Vector2D startPosition, LevelScreen* _level
 
 Enemy::~Enemy() 
 {
-	levelScreen->enemies.erase(remove(levelScreen->enemies.begin(), levelScreen->enemies.end(), this), levelScreen->enemies.end());
+	levelScreen->enemies[std::distance(levelScreen->enemies.begin(), std::find(levelScreen->enemies.begin(), levelScreen->enemies.end(), this))] = nullptr;
 	m_renderer = nullptr;
+	delete m_animator;
+	m_animator = nullptr;
+	delete m_physics;
+	m_physics = nullptr;
+	delete m_texture;
+	m_texture = nullptr;
+	levelScreen = nullptr;
 }
 
 void Enemy::Render(Vector2D cameraPosition)

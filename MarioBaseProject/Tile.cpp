@@ -67,6 +67,7 @@ Tile::Tile(SDL_Renderer* renderer, Vector2D startPosition, tileData _tileInfo, s
 Tile::~Tile()
 {
 	m_renderer = nullptr;
+	m_animator = nullptr;
 
 	delete m_tileTexture;
 	m_tileTexture = nullptr;

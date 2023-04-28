@@ -56,6 +56,17 @@ LevelCreator::LevelCreator(SDL_Renderer* renderer, GameScreenManager* _screenMan
 LevelCreator::~LevelCreator()
 {
 	m_renderer = nullptr;
+	
+	delete playButton;
+	playButton = nullptr;
+	delete saveButton;
+	saveButton = nullptr;
+
+	tileMap.clear();
+	enemyIcons.clear();
+	gameLogicIcons.clear();
+	optionsDisplayed.clear();
+	sidebarUI.clear();
 }
 
 void LevelCreator::Render()
